@@ -1,0 +1,26 @@
+{
+  "name": "one",
+  "version": "1.0.0",
+  "description": "Slang dictionary is a user- generated dictionary. Each individual word has been entered from someone and can be retrieved. If you do not get a definition, that means no one has thought to add it to our Slang dictionary just yet. Congrats pioneer! You have the option to add a new slang word in the Slang dictionary, just by signing up.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mongodb": "^3.3.5",
+    "mongoose": "^5.7.12",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}

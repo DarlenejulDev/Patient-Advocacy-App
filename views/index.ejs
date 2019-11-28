@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<!--
+	Highlights by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Patient Advocacy</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<section id="header">
+				<header class="major">
+					<h1>Patient Advocacy</h1>
+					<p>Track your daily symptoms</p>
+				</header>
+				<div class="container">
+					<ul class="actions special">
+						<li><a href="#one" class="button primary scrolly">Begin</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main special">
+				<div class="container">
+					<span class="image fit primary"><img src="images/pic01.jpg" alt="" /></span>
+					<div class="content">
+						<header class="major">
+							<h2>How are you feeling today?</h2>
+						</header>
+						<form class="" action="/mood" method="post">
+			      <select class="mood" name="mood">
+			       <option>Sad</option>
+			        <option>Happy</option>
+			        <option>Mad</option>
+			        <option>Calm</option>
+			        <option>Motivated</option>
+			         <option>Emotional</option>
+			      </select>
+					<a href="#two" class="goto-next scrolly">
+					</div>
+				</div>
+			</section>
+
+		<!-- Two -->
+		<section id="two" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic02.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+							<h2 class="feelingsResponse">Why do you feel<span> <%= patientResults.mood %></span>?</h2>
+					</header>
+					<section id="whyFeelings">
+							<textarea name="feelingsReasoning" rows="8" cols="80" class="">
+								I AM HERE
+							</textarea>
+
+							<a href="#three" class="goto-next scrolly">Next</a>
+
+							<button type="submit" name="submit">Submit</button>
+
+					</section>
+				</div>
+			</div>
+		</section>
+
+
+
+		<!-- Three -->
+			<section id="three" class="main special">
+				<div class="container">
+					<span class="image fit primary"><img src="images/pic03.jpg" alt="" /></span>
+					<div class="content">
+						<header class="major">
+							<section id="painQuestion">
+								<h2>Are you experiencing any pain today?</h2>
+								<select class="" name="painQuestionOption">
+									<option>Yes,I am</option>
+									<option>No pain today</option>
+								</select>
+							</section>
+							<section class="middleForBtnAndInput">
+								<p>If yes, where was the pain today?</p>
+									<input class="" type="text" name="painLocation" value=""placeholder="Location of pain">
+							</section>
+							<a href="#four" class="goto-next scrolly">Next</a>
+
+				</div>
+			</section>
+		<!-- Four -->
+		<section id="four" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic03.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+						<section>
+				      <h2>What does the pain feel like?</h2>
+				      <p>Ex: The pain in my right knee feels achy and hot.I feel like the two bones are rubbing up against each other.I stood for more than 30 minutes, and my knee swell up. I felt a throbbing pain.</p>
+
+
+				        <textarea class="explainPain" name="explainPain" rows="8" cols="80" class="painReasoning"></textarea>
+
+
+
+				    </section>
+				</div>
+				<a href="#five" class="goto-next scrolly">Next</a>
+			</div>
+		</section>
+
+		<section id="five" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic03.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+						<section id="extra">
+							<h2>Is there anything else you want to tell me? *Can fix wording* </h2>
+
+
+								<textarea class="" name="extraInfo" rows="8" cols="80" class=""></textarea>
+
+
+						</section>
+				</div>
+				<a href="#six" class="goto-next scrolly">Next</a>
+			</div>
+		</section>
+
+		<section id="six" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic03.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+						<section id="appointment">
+
+				        <h2> Do you want to set an appointment with your provider?</h2>
+				        <select class="" name="appt">
+				          <option>Yes, I want to get better</option>
+				          <!-- If yes, return message, I will send you a reminder everyday to set up your appointment -->
+				          <option>No, I will continue to suffer</option>
+				          <!-- If else, return message "Hope you seek the appropraite help sooner than later. Can't wait to hear from you tomorrow.-->
+				        </select>
+
+				    </section>
+				</div>
+				<a href="#footer" class="goto-next scrolly">Next</a>
+				<button type="submit" name="submit">Next</button>
+			</form>
+
+
+			</div>
+		</section>
+
+
+		<!-- Footer -->
+			<section id="footer">
+				<div class="container">
+					<header class="major">
+						<h2>Get in touch</h2>
+					</header>
+					<form method="post" action="#">
+						<div class="row gtr-uniform">
+							<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" /></div>
+							<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
+							<div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
+							<div class="col-12">
+								<ul class="actions special">
+									<li><input type="submit" value="Send Message" class="primary" /></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div>
+				<footer>
+					<ul class="icons">
+						<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="#" class="icon brands alt fa-dribbble"><span class="label">Dribbble</span></a></li>
+						<li><a href="#" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Demo Images: <a href="http://unsplash.com">Unsplash</a></li>
+					</ul>
+				</footer>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

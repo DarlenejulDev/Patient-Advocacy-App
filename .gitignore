@@ -1,0 +1,23 @@
+appt.ejs
+explainPain.ejs
+extra.ejs
+feelings.ejs
+painQuestion.ejs
+index copy.html
+index.html
+
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+npm-debug.log
+node_modules
