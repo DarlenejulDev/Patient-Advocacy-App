@@ -5,6 +5,10 @@ feelings.ejs
 painQuestion.ejs
 index copy.html
 index.html
+graph.html
+reminders.js
+
+
 
 lib-cov
 *.seed

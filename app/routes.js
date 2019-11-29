@@ -6,7 +6,6 @@ module.exports = function(app, passport, db, ObjectId) {
   app.get('/', function(req, res) {
     res.render('login.ejs');
   });
-
   // PROFILE SECTION =========================
   // This route brings the user to their profile once they have successfully logged in and shows them
   app.get('/mood', isLoggedIn, function(req, res) {
@@ -22,6 +21,22 @@ module.exports = function(app, passport, db, ObjectId) {
     })
   });
 
+  app.get('/userEntries', isLoggedIn, function(req, res) {
+      db.collection('patientVoice').find().toArray((err, result) => {
+        if (err) return console.log(err)
+        res.render('userEntries.ejs', {
+          user : req.user,
+          moodEntries: result,
+          veryHappyCount : result.filter((entry) => entry.mood === '5').length,
+          happyCount:result.filter((entry) => entry.mood === '4').length,
+          neutralCount:result.filter((entry) => entry.mood === '3').length,
+          sadCount:result.filter((entry) => entry.mood === '2').length,
+          verySadCount:result.filter((entry) => entry.mood === '1').length
+        })
+      })
+  });
+
+
   // Once the user logouts , the page goes to the login page
   // LOGOUT ==============================
   app.get('/logout', function(req, res) {
@@ -29,6 +44,13 @@ module.exports = function(app, passport, db, ObjectId) {
     res.redirect('/');
   });
   // ===================================================
+
+
+
+
+
+
+
   // PROFILE ROUTES
   // This request grabs the index.ejs and displays the page along with an object of the results
   // app.get('/welcome', (req, res) => {
@@ -52,9 +74,6 @@ module.exports = function(app, passport, db, ObjectId) {
   // })
 
   // This takes the user's information from the form and saves it into the database.Then it goes to the home route which redisplays the page with the new information.
-  app.get('/mood', function(req, res) {
-    res.render('mood.ejs');
-  });
   // app.get('/feelings', function(req, res) {
   //   res.render('feelings.ejs',{VoiceId:req.query.VoiceId});
   // });
@@ -75,6 +94,7 @@ module.exports = function(app, passport, db, ObjectId) {
   // Option for feelings page (home)
   app.post('/mood', (req, res) => {
     const patientVoice= {
+      date: new Date(),
       mood: req.body.mood,
       made: req.user._id,
       feelingsReasoning: req.body.feelingsReasoning,
@@ -89,88 +109,10 @@ module.exports = function(app, passport, db, ObjectId) {
 
       if (err) return console.log(err)
       console.log('saved to database')
-      res.redirect('/mood?VoiceId='+ patientVoice._id)
+      res.redirect('/userEntries')
     })
   })
 
-  // // Feelings page
-  // app.post('/feelingsResponseForm', (req, res) => {
-  //   const patientVoice= {
-  //     mood: req.body.mood,
-  //     made: req.user._id
-  //   }
-  //   db.collection('patientVoice').findOneAndUpdate({
-  //     _id:ObjectId(req.body.VoiceId)
-  //   },
-  //   {
-  //     $set: {
-  //       feelingsReasoning: req.body.feelingsReasoning
-  //     }
-  //   },
-  //   {},
-  //   (err, result) => {
-  //     if (err) return console.log(err)
-  //     console.log('saved to database')
-  //     console.log(patientVoice._id);
-  //     res.redirect('/painQuestionForm?VoiceId='+ patientVoice._id)
-  //   })
-  // })
-  //
-  //
-  // // Pain Question Page
-  // app.post('/painQuestionForm', (req, res) => {
-  //   db.collection('patientVoice').findOneAndUpdate(
-  //     {_id:ObjectId(req.body.VoiceId)},
-  //     {$set:
-  //       {painLocation: req.body.painLocation}
-  //     },
-  //     {}, (err, result) => {
-  //     if (err) return console.log(err)
-  //     console.log('saved to database')
-  //     res.redirect('/explainPainForm?VoiceId='+ patientVoice._id)
-  //   })
-  // })
-  //
-  // // Explain the pain Page
-  // app.post('/explainPainForm', (req, res) => {
-  //   db.collection('patientVoice').findOneAndUpdate(
-  //     {_id:ObjectId(req.body.VoiceId)},
-  //     {$set:
-  //       {explainPain: req.body.explainPain}
-  //     },
-  //     {}, (err, result) => {
-  //     if (err) return console.log(err)
-  //     console.log('saved to database')
-  //     res.redirect('/extraForm?VoiceId='+ patientVoice._id)
-  //   })
-  // })
-  //
-  // // Anything extra?
-  // app.post('/extraForm', (req, res) => {
-  //   db.collection('patientVoice').findOneAndUpdate(
-  //     {_id:ObjectId(req.body.VoiceId)},
-  //     {$set:
-  //       {extraInfo: req.body.extraInfo}
-  //     },
-  //     {}, (err, result) => {
-  //     if (err) return console.log(err)
-  //     console.log('saved to database')
-  //     res.redirect('/apptForm')
-  //   })
-  // })
-  //
-  // app.post('/apptForm', (req, res) => {
-  //   db.collection('patientVoice').findOneAndUpdate(
-  //     {_id:ObjectId(req.body.VoiceId)},
-  //     {$set:
-  //       {appt: req.body.appt}
-  //     },
-  //     {}, (err, result) => {
-  //     if (err) return console.log(err)
-  //     console.log('saved to database')
-  //     res.redirect('/home')
-  //   })
-  // })
 
   // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
   app.put('/mood', (req, res) => { console.log('hello')
@@ -180,8 +122,9 @@ module.exports = function(app, passport, db, ObjectId) {
       extraInfo: req.body.extraInfo,
       appt: req.body.appt}, {
       $set: {
+
         painLocation: req.body.painLocation,
-          mood: req.body.mood
+        mood: req.body.mood
       }
     },
     {
@@ -192,6 +135,26 @@ module.exports = function(app, passport, db, ObjectId) {
       res.send(result)
     })
   })
+  app.put('/mood', (req, res) => { console.log('hello')
+    db.collection('patientVoice')
+    .findOneAndUpdate({made: req.user._id,
+    feelingsReasoning: req.body.feelingsReasoning,  explainPain: req.body.explainPain,
+      extraInfo: req.body.extraInfo,
+      }, {
+      $set: {
+        appt: req.body.appt
+
+      }
+    },
+    {
+      sort: {_id: -1},
+      upsert: true
+    }, (err, result) => {
+      if (err) return res.send(err)
+      res.send(result)
+    })
+  })
+
 
   // ========================================
   // EX: db.slangEntry(collection name).find({})(empty query search)
