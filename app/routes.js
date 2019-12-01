@@ -1,4 +1,4 @@
-module.exports = function(app, passport, db, ObjectId) {
+module.exports = function(app, passport, db, ObjectId,moment) {
 
   // normal routes ===============================================================
 
@@ -73,30 +73,15 @@ module.exports = function(app, passport, db, ObjectId) {
   //   })
   // })
 
-  // This takes the user's information from the form and saves it into the database.Then it goes to the home route which redisplays the page with the new information.
-  // app.get('/feelings', function(req, res) {
-  //   res.render('feelings.ejs',{VoiceId:req.query.VoiceId});
-  // });
-  // app.get('/painQuestionForm', function(req, res) {
-  //   res.render('painQuestion.ejs',{VoiceId:req.query.VoiceId});
-  // });
-  // app.get('/explainPainForm', function(req, res) {
-  //   res.render('explainPain.ejs',{VoiceId:req.query.VoiceId});
-  // });
-  // app.get('/extraForm', function(req, res) {
-  //   res.render('extra.ejs',{VoiceId:req.query.VoiceId});
-  // });
-  // app.get('/apptForm', function(req, res) {
-  //   res.render('appt.ejs',{VoiceId:req.query.VoiceId});
-  // });
+
 
 
   // Option for feelings page (home)
   app.post('/mood', (req, res) => {
     const patientVoice= {
-      date: new Date(),
-      mood: req.body.mood,
       made: req.user._id,
+      date: moment().format('LLLL'),
+      mood: req.body.mood,
       feelingsReasoning: req.body.feelingsReasoning,
       painQuestionOption:req.body.painQuestionOption,
       painLocation: req.body.painLocation,
@@ -104,7 +89,7 @@ module.exports = function(app, passport, db, ObjectId) {
       extraInfo: req.body.extraInfo,
       appt: req.body.appt,
     }
-    db.collection('patientVoice').insert(patientVoice, (err, result) => {
+    db.collection('patientVoice').save(patientVoice, (err, result) => {
       console.log("Inserted Id here:", patientVoice);
 
       if (err) return console.log(err)
@@ -115,16 +100,14 @@ module.exports = function(app, passport, db, ObjectId) {
 
 
   // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
-  app.put('/mood', (req, res) => { console.log('hello')
+  app.put('/userEntries', (req, res) => { console.log('hello')
+  console.log("updating the moodEntry for: ", req.user._id, "This is also the",req.body.extraInfo, "this is what pain location is: ", req.body.painLocation);
     db.collection('patientVoice')
-    .findOneAndUpdate({made: req.user._id,
-    feelingsReasoning: req.body.feelingsReasoning,  explainPain: req.body.explainPain,
-      extraInfo: req.body.extraInfo,
-      appt: req.body.appt}, {
+    .findOneAndUpdate({made: req.user._id, date:req.body.date
+}, {
       $set: {
-
+        extraInfo: req.body.extraInfo,
         painLocation: req.body.painLocation,
-        mood: req.body.mood
       }
     },
     {
@@ -135,25 +118,7 @@ module.exports = function(app, passport, db, ObjectId) {
       res.send(result)
     })
   })
-  app.put('/mood', (req, res) => { console.log('hello')
-    db.collection('patientVoice')
-    .findOneAndUpdate({made: req.user._id,
-    feelingsReasoning: req.body.feelingsReasoning,  explainPain: req.body.explainPain,
-      extraInfo: req.body.extraInfo,
-      }, {
-      $set: {
-        appt: req.body.appt
 
-      }
-    },
-    {
-      sort: {_id: -1},
-      upsert: true
-    }, (err, result) => {
-      if (err) return res.send(err)
-      res.send(result)
-    })
-  })
 
 
   // ========================================
@@ -179,12 +144,12 @@ module.exports = function(app, passport, db, ObjectId) {
   // })
 
   // this finds all of the properties,once it is a match, it then deletes them
-  app.delete('/mood', (req, res) => { console.log(req.body)
-    db.collection('patientVoice').findOneAndDelete({userWord: req.body.userWord, userMeaning: req.body.userMeaning}, (err, result) => {
-      if (err) return res.send(500, err)
-        res.send('Message deleted!')
-    })
-  })
+  // app.delete('/mood', (req, res) => { console.log(req.body)
+  //   db.collection('patientVoice').findOneAndDelete({made:req.body._id,date:req.body.date}, (err, result) => {
+  //     if (err) return res.send(500, err)
+  //       res.send('Message deleted!')
+  //   })
+  // })
 
   // ===================================================================
   //AUTHENTICATE (FIRST LOGIN)  ==================================================================

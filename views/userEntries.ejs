@@ -2,7 +2,9 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <link rel="stylesheet" href="/assets/css/entriespg.css">
+    <title>History of Entries</title>
+    <script src="https://kit.fontawesome.com/f2e417b558.js" crossorigin="anonymous"></script>
       <!--Load the AJAX API-->
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
@@ -20,7 +22,7 @@
 
           // Create the data table.
           var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Topping');
+          data.addColumn('string', 'Moods');
           data.addColumn('number', 'Slices');
           data.addRows([
             ['Very Happy', <%= veryHappyCount %> ],
@@ -31,42 +33,49 @@
           ]);
 
           // Set chart options
-          var options = {'title':'Mood Chart',
-                         'width':400,
-                         'height':300,
-                        'colors': ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']
-                      };
+
+                      var options = {
+                         legend: 'none',
+                         hAxis: { maxValue: 7 },
+                         vAxis: { maxValue: 13 },
+                         lineWidth: 10,
+                         colors: ['#e2431e', '#d3362d', '#e7711b',
+                                  '#e49307', '#e49307', '#b9c246']
+                       };
 
           // Instantiate and draw our chart, passing in some options.
-          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(data, options);
         }
       </script>
     </head>
   <body>
     <h1>Mood History</h1>
-    <div class="">
+    <div class="moodBlocks">
       <ul class="moodEntries">
       <%
       let numbersToMood = ['Very Sad','Sad','Neutral','Happy','Very Happy']
       for(var i=0; i<moodEntries.length; i++) {
         const moodDescription= numbersToMood[parseInt(moodEntries[i].mood) - 1]
         const d = moodEntries[i].date
-    const formattedDate = d.getFullYear() + '/' + d.getMonth() + '/' + d.getDate() + '/' + d.getHours() + ':' + d.getMinutes()
+        console.log(d)
+        console.log("moodEntry #" + i, moodEntries[i]);
+
+
         %>
         <li class="message">
-           <h3>Date:<span><%= formattedDate %></span></h3>
-           <h3>Mood:<span><%= moodDescription %></span></h3>
-          <span><%= moodEntries[i].feelingsReasoning %></span>
-          <span><%= moodEntries[i].painQuestionOption %></span>
-          <span><%= moodEntries[i].painLocation %></span>
-          <span><%= moodEntries[i].explainPain %></span>
-          <span><%= moodEntries[i].extraInfo %></span>
-          <span><%= moodEntries[i].appt %></span>
 
+           <h3>Mood: <span><%= moodDescription %></span></h3>
+          <h4>Reason for mood: <span><%= moodEntries[i].feelingsReasoning %></span></h4>
+          <h4>In Pain: <span><%= moodEntries[i].painQuestionOption %></span></h4>
+          <h4>Pain location: <span class="painLocation" contenteditable="true"><%= moodEntries[i].painLocation %></span></h4>
+          <h4>Description of pain: <span><%= moodEntries[i].explainPain %></span></h4>
+          <h4>Anything else: <span class="extraInfo" contenteditable="true"><%= moodEntries[i].extraInfo %></span></h4>
+          <h4>Set appointment?: <span><%= moodEntries[i].appt %></span></h4>
 
-          <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-          <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+          <span id="demo"></span>
+          <span class="update"><i class="far fa-edit"></i></span>
+          <span class="delete"><i class="far fa-trash-alt"></i></span>
 
         </li>
       <% } %>
@@ -78,7 +87,7 @@
       <body>
         <!--Div that will hold the pie chart-->
         <div id="chart_div"></div>
-
-
+        <a href="/logout">Log Out</a>
+        <script type="text/javascript" src="/assets/js/app.js"></script>
   </body>
 </html>

@@ -15,7 +15,8 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
-
+var Nexmo = require('nexmo');
+var moment = require('moment');
 var configDB = require('./config/database.js');
 
 var db
@@ -24,7 +25,7 @@ var db
 mongoose.connect(configDB.url, (err, database) => {
   if (err) return console.log(err)
   db = database
-  require('./app/routes.js')(app, passport, db, ObjectId);
+  require('./app/routes.js')(app, passport, db, ObjectId,moment);
 }); // connect to our database
 
 //app.listen(port, () => {

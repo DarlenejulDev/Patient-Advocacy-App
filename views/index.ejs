@@ -10,12 +10,14 @@
 	<body class="is-preload">
 
 		<!-- Header -->
+
 			<section id="header">
-				<a href="/userEntries">View History</a>
 				<header class="major">
 
 					<h1>Patient Advocacy</h1>
 					<p>Track your daily symptoms</p>
+					<a href="/userEntries">View History</a>
+
 				</header>
 				<div class="container">
 					<ul class="actions special">
@@ -33,7 +35,8 @@
 						<header class="major">
 							<h2>How are you feeling today?</h2>
 						</header>
-						<p>Rate your mood on a scale of 1-5, with 10 being the happiest and 1 being the saddest.</p>
+						<p>Rate your mood on a scale of 1-5</p>
+						<p>1 being the saddest and 5 being the happiest</p>
 			      <select id="mood" name="mood">
 							<option> - </option>
 			        <option>1</option>
@@ -79,13 +82,13 @@
 							<section id="painQuestion">
 								<h2>Are you experiencing any pain today?</h2>
 								<select class="" name="painQuestionOption">
-									<option>Yes,I am</option>
-									<option>No pain today</option>
+									<option>Yes,I do feel pain</option>
+									<option>No, I do not have any pain</option>
 								</select>
 							</section>
 							<section class="middleForBtnAndInput">
 								<p>If yes, where was the pain today?</p>
-									<input class="" type="text" name="painLocation" value=""placeholder="Location of pain">
+									<input class="painLocation" type="text" name="painLocation" value=""placeholder="Location of pain">
 							</section>
 							<a href="#four" class="goto-next scrolly">Next</a>
 
@@ -118,10 +121,10 @@
 				<div class="content">
 					<header class="major">
 						<section id="extra">
-							<h2>Is there anything else you want to tell me? *Can fix wording* </h2>
+							<h2>Is there anything else you may want to add, just in case?</h2>
 
 
-								<textarea class="" name="extraInfo" rows="8" cols="80" class=""></textarea>
+								<textarea class="extraInfo" name="extraInfo" rows="8" cols="80" class=""></textarea>
 
 
 						</section>
@@ -148,8 +151,9 @@
 				    </section>
 				</div>
 
-				<button type="submit" name="submit">Next</button>
-
+				<ul class="actions special">
+					<li><input type="submit" name= "submit" value="Send Message" class="primary" /></li>
+				</ul>
 
 			</div>
 		</section>
@@ -158,33 +162,13 @@
 
 		<!-- Footer -->
 			<section id="footer">
-				<div class="container">
-					<header class="major">
-						<h2>Get in touch</h2>
-					</header>
-					<form method="post" action="#">
-						<div class="row gtr-uniform">
-							<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" /></div>
-							<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
-							<div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
-							<div class="col-12">
-								<ul class="actions special">
-									<li><input type="submit" value="Send Message" class="primary" /></li>
-								</ul>
-							</div>
-						</div>
-					</form>
-				</div>
 				<footer>
 					<ul class="icons">
 						<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands alt fa-dribbble"><span class="label">Dribbble</span></a></li>
 						<li><a href="#" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
 					</ul>
 					<ul class="copyright">
-						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Demo Images: <a href="http://unsplash.com">Unsplash</a></li>
+						<li>&copy;Darlene Julien</li>
 					</ul>
 				</footer>
 			</section>

@@ -1,0 +1,13 @@
+.moodBlocks{
+  border: 2px solid green;
+  width: 50%;
+  float: left;
+
+}
+
+#chart_div{
+  float: left;
+}
+h1{
+  text-align: center;
+}

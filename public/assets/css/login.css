@@ -1,0 +1,275 @@
+@import url(https://fonts.googleapis.com/css?family=Montez|Pompiere);
+
+
+*{
+	box-sizing: content-box;
+	margin:0;
+	font-weight: 300;
+overflow:hidden;
+}
+
+body{
+	font-family: 'Montez', sans-serif;
+	font-weight: 300;
+/* WebKit browsers */
+	::-webkit-input-placeholder{
+		font-family: 'Pompiere', sans-serif;
+			color:    #fff;
+		font-weight: 300;
+    font-size:20px;
+	}
+	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		font-family: 'Pompiere', sans-serif;
+		 color:    #fff;
+		 opacity:  1;
+		font-weight: 300;
+	}
+	::-moz-placeholder {
+		font-family: 'Pompiere', sans-serif;
+		 color:    #fff;
+		 opacity:  1;
+		font-weight: 300;
+	}
+	:-ms-input-placeholder {
+		font-family: 'Pompiere', sans-serif;
+		 color:    #fff;
+		font-weight: 300;
+	}
+}
+
+.wrapper{
+	background: #111;
+background: -webkit-linear-gradient(top left, #000 0%, #fff 100%);
+background: -moz-linear-gradient(top left, #000 0%,#fff 100%);
+background: -o-linear-gradient(top left, #000 0%, #fff 100%);
+background: linear-gradient(to bottom right, #000 0%, #fff 100%);
+
+	position: absolute;
+
+	left: 0;
+	width: 100%;
+	height: 100%;
+	margin-top: 0px;
+	overflow: hidden;
+	padding-top:20px;
+	&.form-success{
+		.container{
+
+			h1{
+        font-size:48px;
+        color:#111;
+				transform: translateY(100px);
+			}
+		}
+	}
+}
+
+.container{
+	  background:
+        linear-gradient( 180deg, transparent 10%, rgba(0, 0, 0, 0.1) 10% ),
+        linear-gradient( 180deg, transparent 20%, rgba(0, 0, 0, 0.1) 20% ),
+        linear-gradient( 180deg, transparent 30%, rgba(0, 0, 0, 0.1) 30% ),
+        linear-gradient( 180deg, transparent 40%, rgba(0, 0, 0, 0.1) 40% ),
+        linear-gradient( 180deg, transparent 50%, rgba(0, 0, 0, 0.1) 50% ),
+        linear-gradient( 180deg, transparent 60%, rgba(0, 0, 0, 0.1) 60% ),
+        linear-gradient( 180deg, transparent 70%, rgba(0, 0, 0, 0.1) 70% ),
+        linear-gradient( 180deg, transparent 80%, rgba(0, 0, 0, 0.1) 80% ),
+        linear-gradient( 90deg, transparent 90%, rgba(0, 0, 0, 0.1) 90% ),
+        linear-gradient( 90deg, transparent 100%, rgba(0, 0, 0, 0.1) 100% )
+        white;
+
+    width: 400px;
+	margin: 0 auto;
+	padding-top: 80px ;
+	height: 400px;
+	text-align: center;
+
+    border: 1px solid #333;
+   box-shadow: 10px 10px 5px #000;
+
+	h1{
+		font-size: 40px;
+		transition-duration: 2s;
+		transition-timing-function: ease-in-out;
+		font-weight: 400;
+	}
+}
+
+form{
+	padding: 20px 0;
+	position: relative;
+	z-index: 2;
+
+	input{
+		display: block;
+		outline: 0;
+		border: 1px solid fade(blue, 20%);
+		background-color: fade(black, 80%);
+		width: 250px;
+
+		border-radius: 5px;
+		padding: 10px 15px;
+		margin: 10px auto 10px auto;
+		display: block;
+		text-align: center;
+		font-size: 18px;
+
+		color: #000;
+
+		transition-duration: 0.5s;
+		font-weight: 300;
+
+		&:hover{
+			background-color: fade(#111, 40%);
+		}
+
+		&:focus{
+			background-color: #fff;
+			width: 300px;
+
+			color: #000;
+		}
+	}
+
+	button{
+		font-family:Pompiere;
+		background-color: #fff;
+		border: 0;
+		padding: 10px 15px;
+		color: #111;
+		border-radius: 3px;
+		width: 250px;
+		cursor: pointer;
+		font-size: 18px;
+    font-weight:600;
+		transition-duration: 0.25s;
+
+		&:hover{
+			background-color: hotpink;
+		}
+	}
+}
+
+.bg-bubbles{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	z-index: 1;
+
+	li{
+		position: absolute;
+		list-style: none;
+		display: block;
+		width: 40px;
+		height: 40px;
+		background-color: fade(white, 15%);
+		bottom: -160px;
+		  border-radius: 150px;
+		-webkit-animation: square 50s infinite;
+		animation:         square 50s infinite;
+
+		-webkit-transition-timing-function: linear;
+		transition-timing-function: linear;
+
+    		&:nth-child(1){
+			left: 10%;
+		}
+
+		&:nth-child(2){
+			left: 20%;
+
+			width: 80px;
+			height: 80px;
+
+			animation-delay: 0s;
+			animation-duration: 7s;
+		}
+
+		&:nth-child(3){
+			left: 25%;
+			animation-delay: 4s;
+		}
+
+		&:nth-child(4){
+			left: 40%;
+			width: 60px;
+			height: 60px;
+
+			animation-duration: 22s;
+
+			background-color: fade(white, 25%);
+		}
+
+		&:nth-child(5){
+			left: 70%;
+		}
+
+		&:nth-child(6){
+			left: 80%;
+			width: 12px;
+			height: 12px;
+
+			animation-delay: 30s;
+			background-color: fade(white, 30%);
+		}
+
+		&:nth-child(7){
+			left: 32%;
+			width: 160px;
+			height: 160px;
+
+			animation-delay: 7s;
+		}
+
+		&:nth-child(8){
+			left: 55%;
+			width: 20px;
+			height: 20px;
+
+			animation-delay: 15s;
+			animation-duration: 40s;
+		}
+
+		&:nth-child(9){
+			left: 25%;
+			width: 10px;
+			height: 10px;
+
+			animation-delay: 2s;
+			animation-duration: 40s;
+			background-color: fade(white, 30%);
+		}
+
+		&:nth-child(10){
+			left: 90%;
+			width: 160px;
+			height: 160px;
+
+			animation-delay: 11s;
+		}
+    &:nth-child(11){
+			left: 25%;
+			width: 60px;
+			height: 60px;
+
+			animation-delay: 2s;
+		}
+	}
+}
+
+
+@-webkit-keyframes square {
+  0%   { transform: translateY(0); background-color: fade(white, 0%);
+		 }
+  100% { transform: translateY(-100px);background-color: fade(white, 100%);
+		  }
+}
+@keyframes square {
+  0%   { transform: translateY(0); background-color: fade(white, 100%);
+		}
+  100% { transform: translateY(-500px) ; background-color: fade(white, 0%);
+		}
+}
