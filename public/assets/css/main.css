@@ -2706,10 +2706,10 @@ input, select, textarea {
 /* Main BG */
 
 	.main-bg {
-		-moz-transition: opacity 0.5s ease-out;
-		-webkit-transition: opacity 0.5s ease-out;
-		-ms-transition: opacity 0.5s ease-out;
-		transition: opacity 0.5s ease-out;
+		-moz-transition: opacity 0.2s ease-out;
+		-webkit-transition: opacity 0.2s ease-out;
+		-ms-transition: opacity 0.2s ease-out;
+		transition: opacity 0.2s ease-out;
 		background-attachment: fixed,							fixed;
 		background-position: top left,						center center;
 		background-repeat: repeat,							none;
@@ -2814,6 +2814,8 @@ input, select, textarea {
 
 			#header header a {
 				color: inherit;
+				font-weight:600;
+				color: #8cd1a8 ;
 			}
 
 				#header header a:hover {

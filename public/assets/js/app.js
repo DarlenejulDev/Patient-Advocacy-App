@@ -1,15 +1,19 @@
 
-// let painLocation = document.getElementsByClassName('painLocation')
 let painLocation = document.querySelectorAll('.painLocation')
-console.log(painLocation);
-// let extraInfo =document.getElementsByClassName('extraInfo')
-let extraInfo= document.querySelectorAll('.extraInfo')
-console.log(extraInfo);
 
-// let del = document.getElementsByClassName('delete')
+let extraInfo= document.querySelectorAll('.extraInfo')
+
+let del = document.querySelectorAll('.delete')
 // let update= document.getElementsByClassName('update')
 let update =document.querySelectorAll('.update')
-console.log(update);
+
+
+let numberInput=document.querySelectorAll('.number')
+
+let textInput=document.getElementById('msg')
+
+let btn = document.getElementById('button')
+console.log(btn);
 // let find= document.getElementsByClassName('find')
 //
 // let mood = document.getElementById('mood')
@@ -20,6 +24,31 @@ console.log(update);
 //   var userMood = mood.options[mood.selectedIndex].value;
 //   moodInherited.textContent = userMood
 // })
+
+btn.addEventListener('click',send,false);
+
+function send(){
+  const number = numberInput.value.replace(/\D/g, '');
+  const text= textInput.value;
+  fetch('/userEntries'),{
+    method: 'post',
+    headers: {
+      'Content-type':'application/json'
+    },
+    body:{JSON.stringify
+      ({number: number,text:text})}
+  })
+  .then(function(res){})
+  console.log(res);
+  })
+  .catch(function(err) {
+   console.log(err);
+   });
+   }
+
+
+
+
 
 
 // Any user w/o accounts
@@ -96,6 +125,22 @@ for (let i=0; i< update.length; i++){
           });
     }
 
+    for (let i=0; i< del.length; i++){
+      del[i].addEventListener('click',( )=>{
+        alert('I work');
+                fetch('userEntries', {
+                  method: 'delete',
+                  headers: {'Content-Type': 'application/json','Accept': 'application/json'},
+                  body: JSON.stringify({
+                    'extraInfo': extraInfo[i].innerHTML
+
+                  })
+                })
+                .then(response => {
+                  if (response.ok) return response.json()
+                })
+              });
+        }
 
 //   })
 // }

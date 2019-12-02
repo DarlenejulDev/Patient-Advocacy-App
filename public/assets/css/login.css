@@ -9,7 +9,7 @@ overflow:hidden;
 }
 
 body{
-	font-family: 'Montez', sans-serif;
+	/* font-family: 'Montez', sans-serif; */
 	font-weight: 300;
 /* WebKit browsers */
 	::-webkit-input-placeholder{

@@ -1,4 +1,4 @@
-module.exports = function(app, passport, db, ObjectId,moment) {
+module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
 
   // normal routes ===============================================================
 
@@ -10,7 +10,6 @@ module.exports = function(app, passport, db, ObjectId,moment) {
   // This route brings the user to their profile once they have successfully logged in and shows them
   app.get('/mood', isLoggedIn, function(req, res) {
     // const presentUser = req.user._id
-    console.log(req.user._id)
     db.collection('patientVoice').find({made: new ObjectId(req.user._id)}).toArray((err, result) => {
       if (err) return console.log(err)
       console.table(result);
@@ -78,6 +77,7 @@ module.exports = function(app, passport, db, ObjectId,moment) {
 
   // Option for feelings page (home)
   app.post('/mood', (req, res) => {
+    // if(req,body.number.length>0)
     const patientVoice= {
       made: req.user._id,
       date: moment().format('LLLL'),
@@ -88,7 +88,34 @@ module.exports = function(app, passport, db, ObjectId,moment) {
       explainPain: req.body.explainPain,
       extraInfo: req.body.extraInfo,
       appt: req.body.appt,
+      number: parseInt(req.body.number)
     }
+
+    const nexmo = new Nexmo({
+      apiKey: '0c61115a',
+      apiSecret: 'WRYKwYPtXYAu3yFi',
+    },{debug:true });
+
+
+    const numberFrom = '17607339142'
+    const to = '18572666012'
+    const text = 'Please set your appointment'
+
+    console.log('Nexmo!!!', nexmo);
+
+    nexmo.message.sendSms(numberFrom, to, text, (err, responseData) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if(responseData.messages[0]['status'] === "0") {
+                console.log("Message sent successfully.");
+            } else {
+                console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
+            }
+        }
+    })
+
+
     db.collection('patientVoice').save(patientVoice, (err, result) => {
       console.log("Inserted Id here:", patientVoice);
 
@@ -100,8 +127,7 @@ module.exports = function(app, passport, db, ObjectId,moment) {
 
 
   // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
-  app.put('/userEntries', (req, res) => { console.log('hello')
-  console.log("updating the moodEntry for: ", req.user._id, "This is also the",req.body.extraInfo, "this is what pain location is: ", req.body.painLocation);
+  app.put('/userEntries', (req, res) => {
     db.collection('patientVoice')
     .findOneAndUpdate({made: req.user._id, date:req.body.date
 }, {
@@ -121,35 +147,72 @@ module.exports = function(app, passport, db, ObjectId,moment) {
 
 
 
-  // ========================================
-  // EX: db.slangEntry(collection name).find({})(empty query search)
-  // app.put('/searchWord', (req, res) => { console.log('hello')
-  //   db.collection('slangEntry')
-  //   .find({userChoiceWord: req.body.userChoiceWord, userWord: req.body.userWord}, {
-  //     $set: {
-  //
-  //     }
-  //   },
-  //   {
-  //     sort: {_id: -1},
-  //     upsert: true
-  //   }, (err, result) => {
-  //     if (err) return res.send(err)
-  //     res.send(result)
-  //   }).forEach(printjson);
-  // })
-  // {
+//
+// NEXMO SMS CODE =========================
+//     Init NEXMO
 
-  // })
-  // })
+
+    const nexmoo = new Nexmo({
+      apiKey: '0c61115a',
+      apiSecret: 'WRYKwYPtXYAu3yFi',
+    },{debug:true });
+
+    // const from = '17607339142';
+    // const to = '18572666012';
+    // const text = 'Hello from Nexmo';
+    //
+    // nexmo.message.sendSms(from, to, text);
+
+
+    //send text reminders to users
+    app.post('/userEntries', (req, res) => {
+      console.log('this fires')
+      res.send(req.body);
+    //   const number = req.body.number;
+    //
+    //   const text = req.body.text;
+    //
+    //   nexmo.message.sendSms(
+    //     '17607339142', number, text, {
+    //       type: 'unicode'
+    //     },
+    //     (err, responseData) => {
+    //       if (err) {
+    //       return console.log(err);
+    //     }else{
+    //       console.dir(responseData);
+    //     }
+    //   })
+    // });
+
+    const from = '17607339142'
+    const to = '18572666012'
+    const text = 'Please set your appointment'
+
+    nexmo.message.sendSms(from, to, text, (err, responseData) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if(responseData.messages[0]['status'] === "0") {
+                console.log("Message sent successfully.");
+            } else {
+                console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
+            }
+        }
+    })
+  })
+
+
 
   // this finds all of the properties,once it is a match, it then deletes them
-  // app.delete('/mood', (req, res) => { console.log(req.body)
-  //   db.collection('patientVoice').findOneAndDelete({made:req.body._id,date:req.body.date}, (err, result) => {
-  //     if (err) return res.send(500, err)
-  //       res.send('Message deleted!')
-  //   })
-  // })
+  app.delete('/userEntries', (req, res) => {
+    (req.body)
+    var uId = ObjectId(req.session.passport.user)
+    db.collection('patientVoice').findOneAndDelete({_id:uId,date:req.body.date,extraInfo:req.body.extraInfo}, (err, result) => {
+      if (err) return res.send(500, err)
+        res.send('Message deleted!')
+    })
+  })
 
   // ===================================================================
   //AUTHENTICATE (FIRST LOGIN)  ==================================================================
@@ -173,7 +236,7 @@ module.exports = function(app, passport, db, ObjectId,moment) {
   // SIGNUP =================================
   // show the signup form
   app.get('/signup', function(req, res) {
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
+    res.render('signup.ejs', { patientResults: req.flash('signupMessage') });
   });
 
   // process the signup form
@@ -194,7 +257,6 @@ module.exports = function(app, passport, db, ObjectId,moment) {
   // local -----------------------------------
   app.get('/unlink/local', isLoggedIn, function(req, res) {
     var user            = req.user;
-    user.local.pNumber  = undefined;
     user.local.email    = undefined;
     user.local.password = undefined;
     user.save(function(err) {
@@ -206,7 +268,6 @@ module.exports = function(app, passport, db, ObjectId,moment) {
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-  console.log(req)
   if (req.isAuthenticated())
   return next();
 
