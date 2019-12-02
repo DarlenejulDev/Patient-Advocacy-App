@@ -17,6 +17,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var Nexmo = require('nexmo');
 var moment = require('moment');
+var socketio =require('socket.io')
 var configDB = require('./config/database.js');
 
 var db
@@ -25,7 +26,7 @@ var db
 mongoose.connect(configDB.url, (err, database) => {
   if (err) return console.log(err)
   db = database
-  require('./app/routes.js')(app, passport, db, ObjectId,moment);
+  require('./app/routes.js')(app, passport, db, ObjectId,moment,Nexmo,socketio);
 }); // connect to our database
 
 //app.listen(port, () => {

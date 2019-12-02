@@ -1,13 +1,32 @@
 .moodBlocks{
-  border: 2px solid green;
+  /* border: 2px solid green; */
   width: 50%;
   float: left;
+  font-family: 'Solway', serif;
+  background-color: white;
+  opacity: 0.5;
+  margin-right: 1.5em;
 
 }
 
 #chart_div{
   float: left;
+  opacity: 0.60;
 }
 h1{
   text-align: center;
+  font-family: 'Solway', serif;
+}
+h3{
+  color: blue;
+}
+/* body{
+  background-image: url(images/pic02.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+
+} */
+body{
+      background: url(/images/entry.jpg) no-repeat fixed center center;
+      background-size: cover;
 }
