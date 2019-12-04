@@ -88,7 +88,16 @@
 							</section>
 							<section class="middleForBtnAndInput">
 								<p>If yes, where was the pain today?</p>
-									<input class="painLocation" type="text" name="painLocation" value=""placeholder="Location of pain">
+								<select id="painLocation" name="painLocation">
+									<option> - </option>
+									<option>Knee</option>
+									<option>Head</option>
+									<option>Right Arm</option>
+									<option>Left Arm</option>
+									 <option>Right Leg</option>
+									 <option>Left Leg</option>
+								</select>
+									<!-- <input class="painLocation" type="text" name="painLocation" value=""placeholder="Location of pain"> -->
 							</section>
 							<a href="#four" class="goto-next scrolly">Next</a>
 
@@ -142,16 +151,16 @@
 
 				        <h2> Do you want to set an appointment with your provider?</h2>
 				        <select class="" name="appt">
-				          <option>Yes, I want to get better</option>
+									<option> -Please select an option- </option>
+				          <option value="Yes">Yes, I want to get better</option>
 				          <!-- If yes, return message, I will send you a reminder everyday to set up your appointment -->
-				          <option>No, I will continue to suffer</option>
+				          <option value="No">No, I will continue to suffer</option>
 				          <!-- If else, return message "Hope you seek the appropraite help sooner than later. Can't wait to hear from you tomorrow.-->
 				        </select>
-               <p>If yes, please put in phone number for text reminders to be sent to your phone.</p>
-							 
-							 <input class="number" type="tel" name="number" value="" placeholder="Ex: 18571231234">
-							 <input type="text" name="msg" id="msg" placeholder="Customize your reminder">
-							 <!-- <input type="button" name="button" id="button" placeholder="Send text"></button> -->
+               <p>If yes, a text message reminder will  be sent to you.</p>
+
+							 <!-- <input class="number" type="tel" name="numberEntered" value="" placeholder="Ex: 18571231234"> -->
+
 				    </section>
 				</div>
 

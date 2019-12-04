@@ -25,26 +25,26 @@ console.log(btn);
 //   moodInherited.textContent = userMood
 // })
 
-btn.addEventListener('click',send,false);
-
-function send(){
-  const number = numberInput.value.replace(/\D/g, '');
-  const text= textInput.value;
-  fetch('/userEntries'),{
-    method: 'post',
-    headers: {
-      'Content-type':'application/json'
-    },
-    body:{JSON.stringify
-      ({number: number,text:text})}
-  })
-  .then(function(res){})
-  console.log(res);
-  })
-  .catch(function(err) {
-   console.log(err);
-   });
-   }
+// btn.addEventListener('click',send,false);
+//
+// function send(){
+//   const number = numberInput.value.replace(/\D/g, '');
+//   const text= textInput.value;
+//   fetch('/mood'),{
+//     method: 'post',
+//     headers: {
+//       'Content-type':'application/json'
+//     },
+//     body:JSON.stringify{
+//       ({number: number,text:text})}
+//   })
+//   .then(function(res){})
+//   console.log(res);
+//   })
+//   .catch(function(err) {
+//    console.log(err);
+//    });
+//    }
 
 
 
@@ -125,22 +125,6 @@ for (let i=0; i< update.length; i++){
           });
     }
 
-    for (let i=0; i< del.length; i++){
-      del[i].addEventListener('click',( )=>{
-        alert('I work');
-                fetch('userEntries', {
-                  method: 'delete',
-                  headers: {'Content-Type': 'application/json','Accept': 'application/json'},
-                  body: JSON.stringify({
-                    'extraInfo': extraInfo[i].innerHTML
-
-                  })
-                })
-                .then(response => {
-                  if (response.ok) return response.json()
-                })
-              });
-        }
 
 //   })
 // }
