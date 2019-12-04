@@ -12,7 +12,7 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
     // const presentUser = req.user._id
     db.collection('patientVoice').find({made: new ObjectId(req.user._id)}).toArray((err, result) => {
       if (err) return console.log(err)
-      console.table(result);
+      // console.table(result);
       res.render('index.ejs', {
         user : req.user,
         patientResults: result
@@ -21,7 +21,7 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
   });
 
   app.get('/userEntries', isLoggedIn, function(req, res) {
-      db.collection('patientVoice').find().toArray((err, result) => {
+      db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {
         if (err) return console.log(err)
         res.render('userEntries.ejs', {
           user : req.user,
@@ -88,21 +88,26 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
       explainPain: req.body.explainPain,
       extraInfo: req.body.extraInfo,
       appt: req.body.appt,
-      number: parseInt(req.body.number)
     }
-
+  if(req.body.appt === "Yes"){
     const nexmo = new Nexmo({
       apiKey: '0c61115a',
       apiSecret: 'WRYKwYPtXYAu3yFi',
     },{debug:true });
 
-
+    console.log("NUM: " + req.body.numberEntered);
     const numberFrom = '17607339142'
-    const to = '18572666012'
+     console.log("This is a phone Number:" , req.user.phoneNumber);
+    let to = req.user.phoneNumber
     const text = 'Please set your appointment'
-
     console.log('Nexmo!!!', nexmo);
 
+    if(to.startsWith("1")){
+      console.log("perfect")
+    }
+    else{
+      to = "1"+ to
+    }
     nexmo.message.sendSms(numberFrom, to, text, (err, responseData) => {
         if (err) {
             console.log(err);
@@ -114,6 +119,8 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
             }
         }
     })
+  }
+
 
 
     db.collection('patientVoice').save(patientVoice, (err, result) => {
@@ -227,7 +234,7 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
   // process the login form
   app.post('/login', passport.authenticate('local-login', {
     successRedirect : '/mood', // redirect to the secure profile section
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 

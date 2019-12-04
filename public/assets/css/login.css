@@ -39,10 +39,10 @@ body{
 
 .wrapper{
 	background: #111;
-background: -webkit-linear-gradient(top left, #000 0%, #fff 100%);
-background: -moz-linear-gradient(top left, #000 0%,#fff 100%);
-background: -o-linear-gradient(top left, #000 0%, #fff 100%);
-background: linear-gradient(to bottom right, #000 0%, #fff 100%);
+background: -webkit-linear-gradient(top left, #FFA64D 0%, #FFB3D9 100%);
+background: -moz-linear-gradient(top left, #FFA64D 0%,#FFB3D9 100%);
+background: -o-linear-gradient(top left, #FFA64D 0%, #FFB3D9 100%);
+background: linear-gradient(bottom right, #FFA64D 0%,#FFB3D9 100%);
 
 	position: absolute;
 
@@ -66,7 +66,7 @@ background: linear-gradient(to bottom right, #000 0%, #fff 100%);
 
 .container{
 	  background:
-        linear-gradient( 180deg, transparent 10%, rgba(0, 0, 0, 0.1) 10% ),
+        linear-gradient( 180deg, transparent 10%, red, 10% ),
         linear-gradient( 180deg, transparent 20%, rgba(0, 0, 0, 0.1) 20% ),
         linear-gradient( 180deg, transparent 30%, rgba(0, 0, 0, 0.1) 30% ),
         linear-gradient( 180deg, transparent 40%, rgba(0, 0, 0, 0.1) 40% ),
