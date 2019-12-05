@@ -47,6 +47,20 @@
           // Instantiate and draw our chart, passing in some options.
           var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
           chart.draw(data, options);
+
+          var painData = new google.visualization.DataTable();
+          painData.addColumn('string', 'Pain');
+          painData.addColumn('number', 'Days');
+          painData.addRows([
+            ['Left Leg', <%= leftLegPainCount %> ],
+            // ['Happy', <%= happyCount %> ],
+            // ['Neutral', <%= neutralCount %> ],
+            // ['Sad', <%= sadCount %> ],
+            // ['Very Sad', <%= verySadCount %> ]
+          ]);
+
+          var painChart = new google.visualization.PieChart(document.getElementById('pain_chart_div'));
+          painChart.draw(painData, options);
         }
       </script>
     </head>
@@ -89,6 +103,7 @@
       <body>
         <!--Div that will hold the pie chart-->
         <div id="chart_div"></div>
+        <div id="pain_chart_div"></div>
         <a href="/logout">Log Out</a>
         <script type="text/javascript" src="/assets/js/app.js"></script>
   </body>

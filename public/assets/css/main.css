@@ -147,7 +147,9 @@ input, select, textarea {
 	em, i {
 		font-style: italic;
 	}
-
+textarea{
+	resize: none;
+}
 	p {
 		margin: 0 0 2em 0;
 	}
