@@ -30,7 +30,8 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
           happyCount:result.filter((entry) => entry.mood === '4').length,
           neutralCount:result.filter((entry) => entry.mood === '3').length,
           sadCount:result.filter((entry) => entry.mood === '2').length,
-          verySadCount:result.filter((entry) => entry.mood === '1').length
+          verySadCount:result.filter((entry) => entry.mood === '1').length,
+          leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length
         })
       })
   });
@@ -90,35 +91,26 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
       appt: req.body.appt,
     }
   if(req.body.appt === "Yes"){
-    const nexmo = new Nexmo({
-      apiKey: '0c61115a',
-      apiSecret: 'WRYKwYPtXYAu3yFi',
-    },{debug:true });
+    var accountSid = 'AC226f2d20f22351b558a71be9b641ea4d'; // Your Account SID from www.twilio.com/console
+    var authToken = 'd3a6e1b6972214cf20c81881ae5dc50f';   // Your Auth Token from www.twilio.com/console
 
-    console.log("NUM: " + req.body.numberEntered);
-    const numberFrom = '17607339142'
-     console.log("This is a phone Number:" , req.user.phoneNumber);
-    let to = req.user.phoneNumber
-    const text = 'Please set your appointment'
-    console.log('Nexmo!!!', nexmo);
+    var twilio = require('twilio');
+    var client = new twilio(accountSid, authToken);
+   let to = req.user.phoneNumber
 
-    if(to.startsWith("1")){
+    if(to.startsWith("+1")){
       console.log("perfect")
     }
     else{
-      to = "1"+ to
+      to = "+1"+ to
     }
-    nexmo.message.sendSms(numberFrom, to, text, (err, responseData) => {
-        if (err) {
-            console.log(err);
-        } else {
-            if(responseData.messages[0]['status'] === "0") {
-                console.log("Message sent successfully.");
-            } else {
-                console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-            }
-        }
-    })
+
+client.messages.create({
+    body: 'Thank you for signing up! Here is my contact information: ',
+    to: to,  // Text this number
+    from: '+17742512317' // From a valid Twilio number
+})
+.then((message) => console.log(message.sid));
   }
 
 
@@ -151,65 +143,6 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
       res.send(result)
     })
   })
-
-
-
-//
-// NEXMO SMS CODE =========================
-//     Init NEXMO
-
-
-    const nexmoo = new Nexmo({
-      apiKey: '0c61115a',
-      apiSecret: 'WRYKwYPtXYAu3yFi',
-    },{debug:true });
-
-    // const from = '17607339142';
-    // const to = '18572666012';
-    // const text = 'Hello from Nexmo';
-    //
-    // nexmo.message.sendSms(from, to, text);
-
-
-    //send text reminders to users
-    app.post('/userEntries', (req, res) => {
-      console.log('this fires')
-      res.send(req.body);
-    //   const number = req.body.number;
-    //
-    //   const text = req.body.text;
-    //
-    //   nexmo.message.sendSms(
-    //     '17607339142', number, text, {
-    //       type: 'unicode'
-    //     },
-    //     (err, responseData) => {
-    //       if (err) {
-    //       return console.log(err);
-    //     }else{
-    //       console.dir(responseData);
-    //     }
-    //   })
-    // });
-
-    const from = '17607339142'
-    const to = '18572666012'
-    const text = 'Please set your appointment'
-
-    nexmo.message.sendSms(from, to, text, (err, responseData) => {
-        if (err) {
-            console.log(err);
-        } else {
-            if(responseData.messages[0]['status'] === "0") {
-                console.log("Message sent successfully.");
-            } else {
-                console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-            }
-        }
-    })
-  })
-
-
 
   // this finds all of the properties,once it is a match, it then deletes them
   app.delete('/userEntries', (req, res) => {

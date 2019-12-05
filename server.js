@@ -15,10 +15,11 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
-var Nexmo = require('nexmo');
-var moment = require('moment');
-var socketio =require('socket.io')
-var configDB = require('./config/database.js');
+var Nexmo         = require('nexmo');
+var moment        = require('moment');
+var socketio      =require('socket.io')
+var twilio        = require('twilio');
+var configDB      = require('./config/database.js');
 
 var db
 
