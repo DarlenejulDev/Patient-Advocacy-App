@@ -1,5 +1,8 @@
-module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
-
+const apikeys = require('./../config/apikeys.js');
+module.exports = function(app, passport, db, ObjectId,moment) {
+var THREE_HOURS = 10800000;
+var accountSid = apikeys.TWILIO_ACCOUNT_SID
+var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
   // normal routes ===============================================================
 
   // This will open to a page that will give the user the option to go to dictionary or sign in to their account
@@ -31,7 +34,15 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
           neutralCount:result.filter((entry) => entry.mood === '3').length,
           sadCount:result.filter((entry) => entry.mood === '2').length,
           verySadCount:result.filter((entry) => entry.mood === '1').length,
-          leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length
+          leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length,
+          rightLegPainCount: result.filter((entry) => entry.painLocation === 'Right Leg').length,
+          rightArmPainCount: result.filter((entry) =>   entry.painLocation === 'Right Arm').length,
+          leftArmPainCount: result.filter((entry) =>   entry.painLocation === 'Left Arm').length,
+          headPainCount: result.filter((entry) =>   entry.painLocation === 'Head').length,
+          shoulderPainCount: result.filter((entry) =>   entry.painLocation === 'Shoulder').length,
+          stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
+          hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
+          rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
         })
       })
   });
@@ -51,27 +62,7 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
 
 
 
-  // PROFILE ROUTES
-  // This request grabs the index.ejs and displays the page along with an object of the results
-  // app.get('/welcome', (req, res) => {
-  //   db.collection('slangEntry').find().toArray((err, result) => {
-  //     if (err) return console.log(err)
-  //     console.table(result);
-  //     res.render('index.ejs', {slangResults: result})
-  //   })
-  // })
-  // app.post('/searchWord', (req,res)=>{
-  //   const word = req.body.userWord;
-  // console.log("hi")
-  // console.log(`The word is ${word}`);
-  // db.collection('slangEntry').find({userWord: new RegExp('^' + word + '$', 'i')}).toArray((err, result) => {
-  //   if (err) return console.log(err)
-  // console.log(Array.isArray(result))
-  // console.log(result);
-  //     console.log(result[0].userMeaning);
-  //     res.render('index.ejs', {slangResults: result})
-  //   })
-  // })
+
 
 
 
@@ -90,12 +81,10 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
       extraInfo: req.body.extraInfo,
       appt: req.body.appt,
     }
-  if(req.body.appt === "Yes"){
-    var accountSid = 'AC226f2d20f22351b558a71be9b641ea4d'; // Your Account SID from www.twilio.com/console
-    var authToken = 'd3a6e1b6972214cf20c81881ae5dc50f';   // Your Auth Token from www.twilio.com/console
 
-    var twilio = require('twilio');
-    var client = new twilio(accountSid, authToken);
+    // Text message feature
+  if(req.body.appt === "Yes"){
+    var client = require('twilio')(accountSid, authToken);
    let to = req.user.phoneNumber
 
     if(to.startsWith("+1")){
@@ -106,14 +95,20 @@ module.exports = function(app, passport, db, ObjectId,moment, Nexmo,socketio) {
     }
 
 client.messages.create({
-    body: 'Thank you for signing up! Here is my contact information: ',
+    body: 'Thank you for signing up! My name is Darlene Julien and I created this patient Advocacy web app that allows the user to log their daily symptoms. Here is my contact information: darlenejuliendev@gmail.com',
     to: to,  // Text this number
-    from: '+17742512317' // From a valid Twilio number
+    from: '+14242926283' // From a valid Twilio number
 })
 .then((message) => console.log(message.sid));
-  }
 
+let messageEmployer = {
+ body: 'Thank you for viewing my Demo Day project! I would love to stay in contact, here is my contact information: Email: darlenejuliendev@gmail.com. Looking forward to working on your team at your company!',
+ to: to,  // Text this number
+from: '+14242926283' // "Thank you for viewing my demo day project. Here is my information:"
+}
+  setTimeout(client.messages.create, THREE_HOURS, messageEmployer);
 
+}
 
     db.collection('patientVoice').save(patientVoice, (err, result) => {
       console.log("Inserted Id here:", patientVoice);
@@ -132,7 +127,6 @@ client.messages.create({
 }, {
       $set: {
         extraInfo: req.body.extraInfo,
-        painLocation: req.body.painLocation,
       }
     },
     {

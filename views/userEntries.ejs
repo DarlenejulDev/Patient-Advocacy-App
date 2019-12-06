@@ -12,9 +12,13 @@
 
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', {'packages':['line']});
+
 
         // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(makeChart);
+
 
         // Callback that creates and populates a data table,
         // instantiates the pie chart, passes in the data and
@@ -48,20 +52,37 @@
           var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
           chart.draw(data, options);
 
-          var painData = new google.visualization.DataTable();
-          painData.addColumn('string', 'Pain');
-          painData.addColumn('number', 'Days');
-          painData.addRows([
-            ['Left Leg', <%= leftLegPainCount %> ],
-            // ['Happy', <%= happyCount %> ],
-            // ['Neutral', <%= neutralCount %> ],
-            // ['Sad', <%= sadCount %> ],
-            // ['Very Sad', <%= verySadCount %> ]
-          ]);
+      };
 
-          var painChart = new google.visualization.PieChart(document.getElementById('pain_chart_div'));
-          painChart.draw(painData, options);
-        }
+
+        function makeChart() {
+    var painData = google.visualization.arrayToDataTable([
+      ['Different', 'Number of days'],
+      ['Left Leg', <%= leftLegPainCount %> ],
+      ['Right Leg', <%= rightLegPainCount %> ],
+      ['Right Arm', <%= rightArmPainCount %> ],
+      ['Left Arm', <%= leftArmPainCount %> ],
+      ['Head', <%= headPainCount %> ],
+      ['Shoulder', <%= shoulderPainCount %> ],
+      ['Stomach', <%= stomachPainCount %> ],
+      ['Hip', <%= hipPainCount %> ],
+      ['Right Foot', <%= rightFootPainCount %> ],
+      ['Left Foot', <%= leftFootPainCount %> ]
+    ]);
+
+    var moreOptions = {
+      title: 'Location of Pain Since Journaling',
+      'width':500,
+      'height':600,
+     colors: ['#957FEF','#7161EF', '#957FEF', '#B79CED',
+              '#DEC0F1', '#EFD9CE'],
+      legend: { position: 'bottom' }
+    };
+
+    var chart = new google.visualization.BarChart(document.getElementById('painChart_div'));
+
+    chart.draw(painData, moreOptions);
+  }
       </script>
     </head>
   <body>
@@ -91,7 +112,6 @@
 
           <span id="demo"></span>
           <span class="update"><i class="far fa-edit"></i></span>
-          <span class="delete"><i class="far fa-trash-alt"></i></span>
 
         </li>
       <% } %>
@@ -103,7 +123,7 @@
       <body>
         <!--Div that will hold the pie chart-->
         <div id="chart_div"></div>
-        <div id="pain_chart_div"></div>
+        <div id="painChart_div"></div>
         <a href="/logout">Log Out</a>
         <script type="text/javascript" src="/assets/js/app.js"></script>
   </body>

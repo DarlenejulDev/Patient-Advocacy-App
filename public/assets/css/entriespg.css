@@ -9,7 +9,7 @@
 
 }
 
-#chart_div{
+#chart_div, #painChart_div{
   float: left;
   opacity: 0.60;
 }
