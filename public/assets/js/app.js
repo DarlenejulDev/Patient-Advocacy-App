@@ -11,32 +11,6 @@ let painQuestionOption = document.getElementById('painQuestionOption')
 
 console.log(btn);
 
-document.getElementById("painAnswer").style.display = "none";
-document.getElementById("moodAnswer").innerHTML = "Answer question one first";
-
-
-
-const values = {};
-const handleChange = event => {
-  values[event.target.name] = event.target.value;
-  console.log(values);
-  if (event.target.name === "painQuestionOption") display();
-  if (event.target.name === "mood") insert();
-};
-​
-Array.from(formQuestions).forEach(element => {
-  element.addEventListener("change", handleChange);
-});
-​
-const display = () => {
-  values.painQuestionOption === "Yes"
-    ? (document.getElementById("painAnswer").style.display = "block")
-    : (document.getElementById("painAnswer").style.display = "none");
-};
-​
-let alt = "Please answer question one first";
-const insert = () =>
-  (document.getElementById("moodAnswer").innerHTML = `${values.mood}?`);
 
 
 for (let i=0; i< update.length; i++){
