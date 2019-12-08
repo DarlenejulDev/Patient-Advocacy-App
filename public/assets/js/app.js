@@ -8,8 +8,17 @@ let update =document.querySelectorAll('.update')
 
 let btn = document.getElementById('button')
 let painQuestionOption = document.getElementById('painQuestionOption')
+let doctor = document.querySelector('.doctor')
 
-console.log(btn);
+if (doctor != null || doctor != undefined) {
+  doctor.addEventListener('change', (a)=>{
+    if (a.target.value === "false") {
+      a.target.value = "true";
+    }else{
+      a.target.value = "false"
+    }
+  })
+}
 
 
 

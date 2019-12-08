@@ -36,17 +36,7 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
       })
     }
   });
-  app.get('/pInfo', isLoggedIn, function(req, res) {
-      const id = req._parsedOriginalUrl.query.replace('query=', '')
-      db.collection('patientVoice').find({made: new ObjectId(id)}).toArray((err, result) => {
-        if (err) return console.log(err)
-        // console.table(result);
-          res.render('patientInfo.ejs', {
-            user : req.user,
-            patientInfo: result
-          })
-      })
-  });
+
   app.get('/userEntries', isLoggedIn, function(req, res) {
       db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {
         if (err) return console.log(err)
@@ -93,7 +83,7 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
 
   // Option for feelings page (home)
   app.post('/mood', (req, res) => {
-
+    
     // if(req,body.number.length>0)
     const patientVoice= {
       made: req.user._id,

@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Patient Advocacy</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+
+			<section id="header">
+				<header class="major">
+
+					<h1>Patient Advocacy</h1>
+					<p>Track your daily symptoms</p>
+					<a href="/userEntries">View History</a>
+
+				</header>
+				<div class="container">
+					<ul class="actions special">
+						<li><a href="#one" class="button primary scrolly">Begin</a></li>
+					</ul>
+				</div>
+			</section>
+			<form class="" action="/mood" method="post">
+
+		<!-- One -->
+			<section id="one" class="main special">
+				<div class="container">
+					<span class="image fit primary"><img src="images/pic01.jpg" alt="" /></span>
+					<div class="content">
+						<header class="major">
+							<h2>How are you feeling today?</h2>
+						</header>
+						<p>Rate your mood on a scale of 1-5</p>
+						<p>1 being the saddest and 5 being the happiest</p>
+			      <select class="question" id="mood" name="mood">
+							<option> - </option>
+			        <option>1</option>
+			        <option>2</option>
+			        <option>3</option>
+			        <option>4</option>
+			         <option>5</option>
+	          </select>
+
+					</div>
+						<a href="#two" class="goto-next scrolly"></a>
+				</div>
+			</section>
+
+		<!-- Two -->
+		<section id="two" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic02.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+							<h2 class="feelingsResponse">Why do you feel like that<h4 id='moodAnswer'>?</h4>
+
+								</h2>
+
+					</header>
+					<section id="whyFeelings">
+							<textarea class= 'question'id="feelingsReasoning" name="feelingsReasoning" rows="8" cols="80"></textarea>
+							<input type="hidden" name="VoiceId">
+							<a href="#three" class="goto-next scrolly">Next</a>
+					</section>
+				</div>
+			</div>
+		</section>
+
+
+		<!-- Three -->
+			<section id="three" class="main special">
+				<div class="container">
+					<span class="image fit primary"><img src="images/pic03.jpg" alt="" /></span>
+					<div class="content">
+						<header class="major">
+							<section id="painQuestion">
+								<h2>Are you experiencing any pain today?</h2>
+								<select class="question" id="painQuestionOption"  name="painQuestionOption">
+									<option> - </option>
+									<option value= "No">No, I do not have any pain</option>
+									<option value="Yes">Yes,I do feel pain</option>
+								</select>
+							</section>
+							<section id='painAnswer' class="middleForBtnAndInput">
+								<p>If yes, where was the pain today?</p>
+								<select id="painLocation" class="question" name="painLocation">
+									<option> - </option>
+									<option>Head</option>
+									<option>Shoulder</option>
+									<option>Stomach</option>
+									<option>Hip</option>
+									<option>Right Arm</option>
+									<option>Left Arm</option>
+									 <option>Right Leg</option>
+									 <option>Left Leg</option>
+									 <option>Knee</option>
+									 <option>Right Foot</option>
+									 <option>Left Foot</option>
+
+
+
+								</select>
+									<!-- <input class="painLocation" type="text" name="painLocation" value=""placeholder="Location of pain"> -->
+							</section>
+							<a href="#four" class="goto-next scrolly">Next</a>
+
+				</div>
+			</section>
+		<!-- Four -->
+		<section id="four" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic04.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+						<section>
+				      <h2>What does the pain feel like?</h2>
+				      <p>Ex: The pain in my right knee feels achy and hot.I feel like the two bones are rubbing up against each other.I stood for more than 30 minutes, and my knee swell up. I felt a throbbing pain.</p>
+
+				        <textarea class="question" class="explainPain" name="explainPain" rows="8" cols="80" ></textarea>
+				    </section>
+				</div>
+				<a href="#five" class="goto-next scrolly">Next</a>
+			</div>
+		</section>
+<!-- five -->
+		<section id="five" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic05.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+						<section id="extra">
+							<h2>Is there anything else you may want to add, just in case?</h2>
+
+
+								<textarea class="extraInfo" name="extraInfo"  rows="8" cols="80" class="question"></textarea>
+
+
+						</section>
+				</div>
+				<a href="#six" class="goto-next scrolly">Next</a>
+			</div>
+		</section>
+
+		<section id="six" class="main special">
+			<div class="container">
+				<span class="image fit primary"><img src="images/pic06.jpg" alt="" /></span>
+				<div class="content">
+					<header class="major">
+						<section id="appointment">
+
+				        <h2> Do you want to set an appointment with your provider?</h2>
+				        <select class="question" name="appt">
+									<option> -Please select an option- </option>
+				          <option value="Yes">Yes, I want to get better</option>
+				          <option value="No">No, I will continue to suffer</option>
+				        </select>
+               <p>If yes, a text message reminder will  be sent to you.</p>
+				    </section>
+				</div>
+
+				<ul class="actions special">
+					<li><input type="submit" name= "submit" value="Send Message" class="primary" /></li>
+				</ul>
+
+			</div>
+		</section>
+	</form>
+
+
+		<!-- Footer -->
+			<section id="footer">
+				<footer>
+					<ul class="icons">
+						<li><a href="https://twitter.com/DarlenejulDev" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="mailto:darlenejuliendev@gmail.com" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>&copy;Darlene Julien</li>
+					</ul>
+				</footer>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script type="text/javascript" src="assets/js/app.js"></script>
+			<script type="text/javascript" src="/socket.io/socket.io.js">
+
+			</script>
+
+	</body>
+</html>
