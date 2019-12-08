@@ -9,9 +9,12 @@
 
 }
 
-#chart_div, #painChart_div{
+#chart_div, #painChart_div, #moodChart_div,#patientPainChart_div{
   float: left;
   opacity: 0.60;
+}
+textarea{
+	resize: none;
 }
 h1{
   text-align: center;

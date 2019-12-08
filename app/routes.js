@@ -43,7 +43,21 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
         // console.table(result);
           res.render('patientInfo.ejs', {
             user : req.user,
-            patientInfo: result
+            patientInfo: result,
+            veryHappyCount : result.filter((entry) => entry.mood === '5').length,
+            happyCount:result.filter((entry) => entry.mood === '4').length,
+            neutralCount:result.filter((entry) => entry.mood === '3').length,
+            sadCount:result.filter((entry) => entry.mood === '2').length,
+            verySadCount:result.filter((entry) => entry.mood === '1').length,
+            leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length,
+            rightLegPainCount: result.filter((entry) => entry.painLocation === 'Right Leg').length,
+            rightArmPainCount: result.filter((entry) =>   entry.painLocation === 'Right Arm').length,
+            leftArmPainCount: result.filter((entry) =>   entry.painLocation === 'Left Arm').length,
+            headPainCount: result.filter((entry) =>   entry.painLocation === 'Head').length,
+            shoulderPainCount: result.filter((entry) =>   entry.painLocation === 'Shoulder').length,
+            stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
+            hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
+            rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
           })
       })
   });
@@ -144,7 +158,18 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
     })
   })
 
-
+  app.post('/searchWord', (req,res)=>{
+    const logDate = req.body.date;
+    // console.log("hi")
+    console.log(`The date is ${logDate}`);
+    db.collection('patientVoice').find({logDate: new RegExp('^' + logDate + '$', 'i')}).toArray((err, result) => {
+      if (err) return console.log(err)
+      // console.log(Array.isArray(result))
+      // console.log(result);
+      console.log(result[0].date);
+      res.render('patientInfo.ejs', {patientInfo: result})
+    })
+  })
   // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
   app.put('/userEntries', (req, res) => {
     db.collection('patientVoice')
