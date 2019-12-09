@@ -87,10 +87,11 @@
   <body>
 
     <div class="moodBlocks">
-    <ul>
+
           <h1><span><%= patientInfo.name %></span>'s Symptom History</h1>
           <h2>Find specific date of log</h2>
-          <form class="logDatePatient" action="/logDatePatient" method="POST">
+          <form class="logDatePatient" action="/pInfo" method="GET">
+            <input type="hidden" name="query" value="<%= query %>">
             <p>
               <span class="input">
                 <input class="logDate" type="date" name="logDate" placeholder="Date">
@@ -100,34 +101,6 @@
             <button class="find"type="submit" name="submit" value="submit">Find</button>
          </form>
 
-          <section>
-            <%
-            let numbersToMood = ['Very Sad','Sad','Neutral','Happy','Very Happy']
-            for(var i=0; i<patientInfo.length; i++) {
-              const moodsDescription= numbersToMood[parseInt(patientInfo[i].mood) - 1]
-              const dt = patientInfo[i].date
-
-
-              %>
-
-            <h3>Display here :
-              <span>
-                <li class="message">
-                   <h3>Date:<span><%= patientInfo[0].date %></span></h3>
-                   <h3>Mood: <span><%= moodsDescription %></span></h3>
-                  <h4>Reason for mood: <span><%= patientInfo[0].feelingsReasoning %></span></h4>
-                  <h4>In Pain: <span><%= patientInfo[0].painQuestionOption %></span></h4>
-                  <h4>Pain location: <span class="painLocation" contenteditable="true"><%= patientInfo[0].painLocation %></span></h4>
-                  <h4>Description of pain: <span><%= patientInfo[0].explainPain %></span></h4>
-                  <h4>Anything else: <span class="extraInfo" contenteditable="true"><%= patientInfo[0].extraInfo %></span></h4>
-                  <h4>Set appointment?: <span><%= patientInfo[i].appt %></span></h4>
-                  <h2>Notes about Patient:</h2>
-                 <textarea class="question" class="doctorNotes" name="doctorNotes" rows="8" cols="80" ></textarea>
-
-                </li>
-                <%= slangResults[0].userMeaning %>
-              </span></h3>
-          </section>
       <%
       let numbersToMood = ['Very Sad','Sad','Neutral','Happy','Very Happy']
       for(var i=0; i<patientInfo.length; i++) {
@@ -136,9 +109,10 @@
 
 
         %>
+      <ul>
 
         <li class="message">
-           <h3>Date:<span><%= patientInfo[i].date %></span></h3>
+           <h3>Date:<span><%= moment(patientInfo[i].date).format('LLLL') %></span></h3>
            <h3>Mood: <span><%= moodsDescription %></span></h3>
           <h4>Reason for mood: <span><%= patientInfo[i].feelingsReasoning %></span></h4>
           <h4>In Pain: <span><%= patientInfo[i].painQuestionOption %></span></h4>
@@ -148,7 +122,7 @@
           <h4>Set appointment?: <span><%= patientInfo[i].appt %></span></h4>
           <h2>Notes about Patient:</h2>
          <textarea class="question" class="doctorNotes" name="doctorNotes" rows="8" cols="80" ></textarea>
-
+         <span class="docNotes"><i class="far fa-edit"></i></span>
         </li>
       <% } %>
       </ul>

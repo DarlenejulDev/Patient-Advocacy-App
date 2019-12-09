@@ -5,6 +5,7 @@ let extraInfo= document.querySelectorAll('.extraInfo')
 let formQuestions = document.getElementsByClassName("question");
 
 let update =document.querySelectorAll('.update')
+let docNotes =document.querySelectorAll('.docNotes')
 
 let btn = document.getElementById('button')
 let painQuestionOption = document.getElementById('painQuestionOption')
@@ -41,12 +42,25 @@ for (let i=0; i< update.length; i++){
             })
           });
     }
+    // 
+    // for (let i=0; i< docNotes.length; i++){
+    //   docNotes[i].addEventListener('click',(event)=> {
+    //             fetch('pInfo', {
+    //               method: 'put',
+    //               headers: {'Content-Type': 'application/json','Accept': 'application/json'},
+    //               body: JSON.stringify({
+    //
+    //                 'doctorNotes':doctorNotes,
+    //                 // 'extraInfo': extraInfo[i].innerHTML
+    //
+    //               })
+    //             })
+    //             .then(response => {
+    //               if (response.ok) return response.json()
+    //             })
+    //           });
+        }
 
-// painQuestionOption.addEventListener('change', (event) => {
-  // event.target & event.currentTarget
-  // event.target.value === "Yes I do", "No I don't"
-//   console.log(event)
-// })
 
 
 
