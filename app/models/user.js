@@ -28,7 +28,8 @@ var userSchema = mongoose.Schema({
     name         : String
   },
   phoneNumber: String,
-  name: String
+  name: String,
+  doctor: Boolean
 });
 
 

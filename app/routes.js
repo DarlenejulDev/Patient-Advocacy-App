@@ -12,23 +12,79 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
   // PROFILE SECTION =========================
   // This route brings the user to their profile once they have successfully logged in and shows them
   app.get('/mood', isLoggedIn, function(req, res) {
-    // const presentUser = req.user._id
-    db.collection('patientVoice').find({made: new ObjectId(req.user._id)}).toArray((err, result) => {
-      if (err) return console.log(err)
-      // console.table(result);
-      res.render('index.ejs', {
-        user : req.user,
-        patientResults: result
+    if (req.user.doctor === true) {
+      db.collection('users').find().toArray((err, result) => {
+        let newResult = []
+        for (let i = 0; i < result.length; i++) {
+          if ('doctor' in result[i] === false) {
+            newResult.push(result[i])
+          }
+        }
+        res.render('doctor.ejs', {
+          user : req.user,
+          patients: newResult
+        });
       })
-    })
+    }else{
+      db.collection('patientVoice').find({made: new ObjectId(req.user._id)}).toArray((err, result) => {
+        if (err) return console.log(err)
+        // console.table(result);
+          res.render('index.ejs', {
+            user : req.user,
+            patientResults: result
+          })
+      })
+    }
   });
+  app.get('/pInfo', isLoggedIn, function(req, res) {
+    const id= req.query.query
+      // const id = req._parsedOriginalUrl.query.replace('query=', '')
+      const filter= {made: new ObjectId(id)}
+      if(req.query.logDate){
+        const dateFind=new Date(req.query.logDate)
+        const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
+        console.log(dateFind);
+        console.log(dateFindNextDay);
+        // filter.and= [
+        //   {date:{$gte:dateFind}},
+        //   {date:{$lt:dateFindNextDay}}
+        // ]
+        filter.date ={$gte:dateFind,$lt:dateFindNextDay}
+        console.log(JSON.stringify(filter));
+      }
 
+      db.collection('patientVoice').find(filter).toArray((err, result) => {
+        if (err) return console.log(err)
+        // console.table(result);
+          res.render('patientInfo.ejs', {
+            query:req.query.query,
+            user : req.user,
+            patientInfo: result,
+            moment: moment,
+            veryHappyCount : result.filter((entry) => entry.mood === '5').length,
+            happyCount:result.filter((entry) => entry.mood === '4').length,
+            neutralCount:result.filter((entry) => entry.mood === '3').length,
+            sadCount:result.filter((entry) => entry.mood === '2').length,
+            verySadCount:result.filter((entry) => entry.mood === '1').length,
+            leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length,
+            rightLegPainCount: result.filter((entry) => entry.painLocation === 'Right Leg').length,
+            rightArmPainCount: result.filter((entry) =>   entry.painLocation === 'Right Arm').length,
+            leftArmPainCount: result.filter((entry) =>   entry.painLocation === 'Left Arm').length,
+            headPainCount: result.filter((entry) =>   entry.painLocation === 'Head').length,
+            shoulderPainCount: result.filter((entry) =>   entry.painLocation === 'Shoulder').length,
+            stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
+            hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
+            rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+          })
+      })
+  });
   app.get('/userEntries', isLoggedIn, function(req, res) {
       db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {
         if (err) return console.log(err)
         res.render('userEntries.ejs', {
           user : req.user,
           moodEntries: result,
+          moment: moment,
           veryHappyCount : result.filter((entry) => entry.mood === '5').length,
           happyCount:result.filter((entry) => entry.mood === '4').length,
           neutralCount:result.filter((entry) => entry.mood === '3').length,
@@ -69,10 +125,10 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
 
   // Option for feelings page (home)
   app.post('/mood', (req, res) => {
-    // if(req,body.number.length>0)
+const now= new Date()
     const patientVoice= {
       made: req.user._id,
-      date: moment().format('LLLL'),
+      date: new Date(),
       mood: req.body.mood,
       feelingsReasoning: req.body.feelingsReasoning,
       painQuestionOption:req.body.painQuestionOption,
@@ -119,7 +175,18 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
     })
   })
 
-
+  app.post('/logDatePatient', (req,res)=>{
+    const logDate = req.body.date;
+    // console.log("hi")
+    console.log(`The date is ${logDate}`);
+    db.collection('patientVoice').find({logDate: new RegExp('^' + logDate + '$', 'i')}).toArray((err, result) => {
+      if (err) return console.log(err)
+      // console.log(Array.isArray(result))
+      // console.log(result);
+      console.log(result[0].date);
+      res.render('patientInfo.ejs', {patientInfo: result})
+    })
+  })
   // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
   app.put('/userEntries', (req, res) => {
     db.collection('patientVoice')

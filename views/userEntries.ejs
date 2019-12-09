@@ -100,7 +100,7 @@
 
         %>
         <li class="message">
-           <h3>Date:<span><%= moodEntries[i].date %></span></h3>
+           <h3>Date:<span><%= moment(moodEntries[i].date).format('LLLL'); %></span></h3>
            <h3>Mood: <span><%= moodDescription %></span></h3>
           <h4>Reason for mood: <span><%= moodEntries[i].feelingsReasoning %></span></h4>
           <h4>In Pain: <span><%= moodEntries[i].painQuestionOption %></span></h4>
@@ -120,7 +120,7 @@
     </div>
 
 
-      <body>
+      <!-- <body> -->
         <!--Div that will hold the pie chart-->
         <div id="chart_div"></div>
         <div id="painChart_div"></div>
