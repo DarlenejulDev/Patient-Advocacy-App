@@ -36,21 +36,23 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
       })
     }
   });
-  app.get('/pInfo', isLoggedIn, function(req, res) {
+var monster = {}
+  app.put('/datePick', (req, res) => {
+    let id = ObjectId(req.body.query)
+    const filter= {made: id}
 
-      const id= req.query.id
-      console.log("query: " + id);
-      const filter= {made: new ObjectId(id)}
-      if(req.query.logDate){
-        const dateFind=new Date(req.query.logDate)
-        const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
-        filter.date ={$gte:dateFind,$lt:dateFindNextDay}
-        console.log(JSON.stringify(filter));
-      }
+    console.log("ID: "+id+" Log: "+ req.body.logDate);
 
+    if(req.body.logDate){
+      const dateFind=new Date(req.body.logDate)
+      const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
+      filter.date ={$gte:dateFind,$lt:dateFindNextDay}
+      console.log(JSON.stringify(filter));
+      console.log("DATE: "+ dateFind);
       db.collection('patientVoice').find(filter).toArray((err, result) => {
+        console.log("RESULTS: "+ result);
         if (err) return console.log(err)
-          res.render('patientInfo.ejs', {
+          monster.results = {
             query:req.query.id,
             queryId: id,
             user :req.user,
@@ -70,8 +72,84 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
             stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
             hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
             rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
-          })
+          }
       })
+
+    }
+      //console.log("monster: "+monster);
+    res.send({query: req.body.query})
+  })
+
+  app.get('/pInfo', isLoggedIn, function(req, res) {
+      if(monster.results){
+        res.on('finish',()=>{monster = {}});
+        res.render('patientInfo.ejs', monster.results)
+
+      }else{
+
+
+      const id = req.query.id
+      console.log("query: " + id);
+      const filter= {made: id}
+      if(req.body.logDate){
+        const dateFind=new Date(req.body.logDate)
+        const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
+        filter.date ={$gte:dateFind,$lt:dateFindNextDay}
+        console.log(JSON.stringify(filter));
+        console.log("DATE: "+ dateFind);
+        db.collection('patientVoice').find(filter).toArray((err, result) => {
+          console.log("RESULTS: "+ result);
+          if (err) return console.log(err)
+            res.render('patientInfo.ejs', {
+              query:req.query.id,
+              queryId: id,
+              user :req.user,
+              patientInfo: result,
+              moment: moment,
+              veryHappyCount : result.filter((entry) => entry.mood === '5').length,
+              happyCount:result.filter((entry) => entry.mood === '4').length,
+              neutralCount:result.filter((entry) => entry.mood === '3').length,
+              sadCount:result.filter((entry) => entry.mood === '2').length,
+              verySadCount:result.filter((entry) => entry.mood === '1').length,
+              leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length,
+              rightLegPainCount: result.filter((entry) => entry.painLocation === 'Right Leg').length,
+              rightArmPainCount: result.filter((entry) =>   entry.painLocation === 'Right Arm').length,
+              leftArmPainCount: result.filter((entry) =>   entry.painLocation === 'Left Arm').length,
+              headPainCount: result.filter((entry) =>   entry.painLocation === 'Head').length,
+              shoulderPainCount: result.filter((entry) =>   entry.painLocation === 'Shoulder').length,
+              stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
+              hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
+              rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+            })
+        })
+      }else{
+        db.collection('patientVoice').find({made: new ObjectId(id)}).toArray((err, result) => {
+          if (err) return console.log(err)
+            res.render('patientInfo.ejs', {
+              query:req.query.id,
+              queryId: id,
+              user :req.user,
+              patientInfo: result,
+              moment: moment,
+              veryHappyCount : result.filter((entry) => entry.mood === '5').length,
+              happyCount:result.filter((entry) => entry.mood === '4').length,
+              neutralCount:result.filter((entry) => entry.mood === '3').length,
+              sadCount:result.filter((entry) => entry.mood === '2').length,
+              verySadCount:result.filter((entry) => entry.mood === '1').length,
+              leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length,
+              rightLegPainCount: result.filter((entry) => entry.painLocation === 'Right Leg').length,
+              rightArmPainCount: result.filter((entry) =>   entry.painLocation === 'Right Arm').length,
+              leftArmPainCount: result.filter((entry) =>   entry.painLocation === 'Left Arm').length,
+              headPainCount: result.filter((entry) =>   entry.painLocation === 'Head').length,
+              shoulderPainCount: result.filter((entry) =>   entry.painLocation === 'Shoulder').length,
+              stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
+              hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
+              rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+            })
+        })
+      }
+
+  }
   });
   app.get('/userEntries', isLoggedIn, function(req, res) {
       db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {

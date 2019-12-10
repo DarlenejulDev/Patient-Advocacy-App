@@ -90,15 +90,15 @@
 
           <h1><span><%= patientInfo.name %></span>'s Symptom History</h1>
           <h2>Find specific date of log</h2>
-          <form class="logDatePatient" action="/pInfo" method="GET">
-            <input type="hidden" name="query" value="<%= query %>">
+          <form id="datePick">
+            <input id="queryVal" type="hidden" name="query" value="<%= query %>">
             <p>
               <span class="input">
-                <input class="logDate" type="date" name="logDate" placeholder="Date">
+                <input id="logDate" class="logDate" type="date" name="logDate" placeholder="Date">
                 <span></span>
               </span>
             </p>
-            <button class="find"type="submit" name="submit" value="submit">Find</button>
+            <button class="find" type="submit" name="submit" value="submit">Find</button>
          </form>
          <ul>
       <%
