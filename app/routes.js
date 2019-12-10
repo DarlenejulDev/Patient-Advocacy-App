@@ -184,23 +184,49 @@ var monster = {}
     res.redirect('/');
   });
   // ===================================================
-  app.post('/docNotes', (req, res) => {
-    const id= req.query.id
-    console.log("this is the id of the log:",id);
-    const dates= req.query.logDate
-    console.log(dates)
-    let notes= {
-      doctorNotes:req.body.doctorNotes, patientLog: req.body.pId}
-    console.log(notes);
-  db.collection('doctorNotes').save(notes, (err, result)=> {
-    console.log("Succesfully saved:", notes);
+//   app.post('/docNotes', (req, res) => {
+//     const id= req.query.id
+//     console.log("this is the id of the log:",id);
+//     const dates= req.query.logDate
+//     console.log(dates)
+//     let notes= {
+//       doctorNotes:req.body.doctorNotes, patientLog: req.body.pId}
+//     console.log(notes);
+//   db.collection('doctorNotes').save(notes, (err, result)=> {
+//     console.log("Succesfully saved:", notes);
+//
+//     if (err) return console.log(err)
+//     console.log('saved to database')
+//     res.redirect('/pInfo?id='+req.body.queryId)
+//   })
+// })
+//
 
-    if (err) return console.log(err)
-    console.log('saved to database')
-    res.redirect('/pInfo?id='+req.body.queryId)
-  })
+app.post('/docNotes', (req, res) => {
+  // const id= req.query.id
+  // console.log("this is the id of the log:",id);
+  // const dates= req.query.logDate
+  // console.log(dates)
+  // let notes= {
+  //   doctorNotes:req.body.doctorNotes, patientLog: req.body.pId}
+  // console.log(notes);
+db.collection('patientVoice').findOneAndUpdate({ _id:ObjectId(req.body.pId)
+}, {
+  $set: {
+    doctorNotes: req.body.doctorNotes,
+  }
+},
+{
+  sort: {_id: -1},
+  upsert:false
+}, (err, result) => {
+  if (err) return res.send(err)
+  res.redirect('/pInfo?id='+req.body.queryId)
 })
-// 
+})
+
+
+
   app.post('/mood', (req, res) => {
 const now= new Date()
     const patientVoice= {
