@@ -25,8 +25,6 @@ if (doctor != null || doctor != undefined) {
 
 for (let i=0; i< update.length; i++){
   update[i].addEventListener('click',(event)=>{
-            // let body = {}
-            // body[event.target.name] = event.target.innerText;
             fetch('userEntries', {
               method: 'put',
               headers: {'Content-Type': 'application/json','Accept': 'application/json'},
@@ -42,23 +40,23 @@ for (let i=0; i< update.length; i++){
             })
           });
     }
-    // 
-    // for (let i=0; i< docNotes.length; i++){
-    //   docNotes[i].addEventListener('click',(event)=> {
-    //             fetch('pInfo', {
-    //               method: 'put',
-    //               headers: {'Content-Type': 'application/json','Accept': 'application/json'},
-    //               body: JSON.stringify({
-    //
-    //                 'doctorNotes':doctorNotes,
-    //                 // 'extraInfo': extraInfo[i].innerHTML
-    //
-    //               })
-    //             })
-    //             .then(response => {
-    //               if (response.ok) return response.json()
-    //             })
-    //           });
+
+    for (let i=0; i< docNotes.length; i++){
+      docNotes[i].addEventListener('click',(event)=> {
+        alert('it works')
+                fetch('message', {
+                  method: 'put',
+                  headers: {'Content-Type': 'application/json','Accept': 'application/json'},
+                  body: JSON.stringify({
+
+                    'doctorNotes':doctorNotes[i].innerText
+
+                  })
+                })
+                .then(response => {
+                  if (response.ok) return response.json()
+                })
+              });
         }
 
 
