@@ -200,6 +200,7 @@ var monster = {}
     res.redirect('/pInfo?id='+req.body.queryId)
   })
 })
+// 
   app.post('/mood', (req, res) => {
 const now= new Date()
     const patientVoice= {
@@ -227,7 +228,7 @@ const now= new Date()
     }
 
 client.messages.create({
-    body: 'Thank you for signing up! My name is Darlene Julien and I created this patient Advocacy web app that allows the user to log their daily symptoms. Here is my contact information: darlenejuliendev@gmail.com',
+    body: 'Thank you for signing up! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms. Here is my contact information: darlenejuliendev@gmail.com',
     to: to,  // Text this number
     from: '+14242926283' // From a valid Twilio number
 })
@@ -251,7 +252,7 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
     })
   })
 
-  // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
+  // This updates our browser to retieve the user ID and the date and see if there is a macth. In this case, it will not create another document since our upsert is set to true.
   app.put('/userEntries', (req, res) => {
     db.collection('patientVoice')
     .findOneAndUpdate({made: req.user._id, date:req.body.date
@@ -268,26 +269,7 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
       res.send(result)
     })
   })
-  //
-  // app.put('/pInfo', (req, res) => {
-  //   const notes= req.body.doctorNotes
-  //   console.log(notes);
-  //   db.collection('patientVoice').findOneAndUpdate(
-  //  )({made: req.user._id,  date: new Date()
-  //   }, {
-  //      $addFields: {
-  //       doctorNotes: notes,
-  //     }
-  //   },
-  //   {
-  //     sort: {_id: -1},
-  //     upsert:true,
-  //     multi:false,
-  //   }, (err, result) => {
-  //     if (err) return res.send(err)
-  //     res.send(result)
-  //   })
-  // })
+
 
 
 

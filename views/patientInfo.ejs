@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/assets/css/entriespg.css">
     <title>Patient Information</title>
     <script src="https://kit.fontawesome.com/f2e417b558.js" crossorigin="anonymous"></script>
@@ -88,7 +89,7 @@
 
     <div class="moodBlocks">
 
-          <h1><span><%= patientInfo.name %></span>'s Symptom History</h1>
+          <h1> Symptom History</h1>
           <h2>Find specific date of log</h2>
           <form id="datePick">
             <input id="queryVal" type="hidden" name="query" value="<%= query %>">
@@ -121,7 +122,7 @@
           <h4>Anything else: <span class="extraInfo" contenteditable="true"><%= patientInfo[i].extraInfo %></span></h4>
           <h4>Set appointment?: <span><%= patientInfo[i].appt %></span></h4>
           <form class="" action="/docNotes" method="post">
-          <h2>Notes about Patient:</h2>
+          <h2 class="notesPatients">Notes about Patient:</h2>
           <input type="hidden" value="<%= patientInfo[i]._id %>" name='pId'>
           <input type="hidden" value="<%= queryId %>" name='queryId'>
          <textarea class="question" class="doctorNotes" name="doctorNotes" rows="8" cols="80" ></textarea>
