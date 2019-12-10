@@ -72,11 +72,11 @@ var monster = {}
             stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
             hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
             rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+            backPainCount: result.filter((entry) =>   entry.painLocation === 'Back').length,
           }
       })
 
     }
-      //console.log("monster: "+monster);
     res.send({query: req.body.query})
   })
 
@@ -120,6 +120,8 @@ var monster = {}
               stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
               hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
               rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+              backPainCount: result.filter((entry) =>   entry.painLocation === 'Back').length,
+
             })
         })
       }else{
@@ -145,10 +147,11 @@ var monster = {}
               stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
               hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
               rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
-            })
-        })
-      }
+              backPainCount: result.filter((entry) =>   entry.painLocation === 'Back').length,
 
+          })
+      })
+    }
   }
   });
   app.get('/userEntries', isLoggedIn, function(req, res) {
@@ -172,6 +175,8 @@ var monster = {}
           stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
           hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
           rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+          backPainCount: result.filter((entry) =>   entry.painLocation === 'Back').length,
+
         })
       })
   });

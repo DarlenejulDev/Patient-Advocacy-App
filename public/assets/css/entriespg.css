@@ -1,20 +1,27 @@
 .moodBlocks{
-  /* border: 2px solid green; */
   width: 50%;
   float: left;
   font-family: 'Solway', serif;
   background-color: white;
   opacity: 0.5;
   margin-right: 1.5em;
-
 }
-
+.backGround{
+  height: 75em;
+  width: 50%;
+  float: left;
+  font-family: 'Solway', serif;
+  background-color: white;
+  opacity: 0.5;
+  margin-right: 1.5em;
+}
 #chart_div, #painChart_div, #moodChart_div,#patientPainChart_div{
   float: left;
   opacity: 0.60;
 }
 textarea{
 	resize: none;
+  font-size: 15px;
 }
 h1{
   text-align: center;
