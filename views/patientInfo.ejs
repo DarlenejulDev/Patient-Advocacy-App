@@ -100,7 +100,7 @@
             </p>
             <button class="find"type="submit" name="submit" value="submit">Find</button>
          </form>
-
+         <ul>
       <%
       let numbersToMood = ['Very Sad','Sad','Neutral','Happy','Very Happy']
       for(var i=0; i<patientInfo.length; i++) {
@@ -109,7 +109,7 @@
 
 
         %>
-      <ul>
+
 
         <li class="message">
            <h3>Date:<span><%= moment(patientInfo[i].date).format('LLLL') %></span></h3>
@@ -120,8 +120,14 @@
           <h4>Description of pain: <span><%= patientInfo[i].explainPain %></span></h4>
           <h4>Anything else: <span class="extraInfo" contenteditable="true"><%= patientInfo[i].extraInfo %></span></h4>
           <h4>Set appointment?: <span><%= patientInfo[i].appt %></span></h4>
+          <form class="" action="/docNotes" method="post">
           <h2>Notes about Patient:</h2>
+          <input type="hidden" value="<%= patientInfo[i]._id %>" name='pId'>
+          <input type="hidden" value="<%= queryId %>" name='queryId'>
          <textarea class="question" class="doctorNotes" name="doctorNotes" rows="8" cols="80" ></textarea>
+         <input type="submit" name="submit" value="submit">
+       </form>
+
          <span class="docNotes"><i class="far fa-edit"></i></span>
         </li>
       <% } %>

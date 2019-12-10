@@ -8,7 +8,7 @@
   <body>
     <ul>
       <% for(let i=0; i<patients.length; i++){ %>
-        <a href="/pInfo?query=<%= patients[i]._id%>">
+        <a href="/pInfo?id=<%= patients[i]._id%>">
           <li><%= patients[i].name %></li></a>
     <%  } %>
     </ul>

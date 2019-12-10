@@ -37,28 +37,23 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
     }
   });
   app.get('/pInfo', isLoggedIn, function(req, res) {
-    const id= req.query.query
-      // const id = req._parsedOriginalUrl.query.replace('query=', '')
+
+      const id= req.query.id
+      console.log("query: " + id);
       const filter= {made: new ObjectId(id)}
       if(req.query.logDate){
         const dateFind=new Date(req.query.logDate)
         const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
-        console.log(dateFind);
-        console.log(dateFindNextDay);
-        // filter.and= [
-        //   {date:{$gte:dateFind}},
-        //   {date:{$lt:dateFindNextDay}}
-        // ]
         filter.date ={$gte:dateFind,$lt:dateFindNextDay}
         console.log(JSON.stringify(filter));
       }
 
       db.collection('patientVoice').find(filter).toArray((err, result) => {
         if (err) return console.log(err)
-        // console.table(result);
           res.render('patientInfo.ejs', {
-            query:req.query.query,
-            user : req.user,
+            query:req.query.id,
+            queryId: id,
+            user :req.user,
             patientInfo: result,
             moment: moment,
             veryHappyCount : result.filter((entry) => entry.mood === '5').length,
@@ -111,19 +106,22 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
     res.redirect('/');
   });
   // ===================================================
+  app.post('/docNotes', (req, res) => {
+    const id= req.query.id
+    console.log("this is the id of the log:",id);
+    const dates= req.query.logDate
+    console.log(dates)
+    let notes= {
+      doctorNotes:req.body.doctorNotes, patientLog: req.body.pId}
+    console.log(notes);
+  db.collection('doctorNotes').save(notes, (err, result)=> {
+    console.log("Succesfully saved:", notes);
 
-
-
-
-
-
-
-
-
-
-
-
-  // Option for feelings page (home)
+    if (err) return console.log(err)
+    console.log('saved to database')
+    res.redirect('/pInfo?id='+req.body.queryId)
+  })
+})
   app.post('/mood', (req, res) => {
 const now= new Date()
     const patientVoice= {
@@ -175,18 +173,6 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
     })
   })
 
-  app.post('/logDatePatient', (req,res)=>{
-    const logDate = req.body.date;
-    // console.log("hi")
-    console.log(`The date is ${logDate}`);
-    db.collection('patientVoice').find({logDate: new RegExp('^' + logDate + '$', 'i')}).toArray((err, result) => {
-      if (err) return console.log(err)
-      // console.log(Array.isArray(result))
-      // console.log(result);
-      console.log(result[0].date);
-      res.render('patientInfo.ejs', {patientInfo: result})
-    })
-  })
   // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
   app.put('/userEntries', (req, res) => {
     db.collection('patientVoice')
@@ -204,6 +190,28 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
       res.send(result)
     })
   })
+  //
+  // app.put('/pInfo', (req, res) => {
+  //   const notes= req.body.doctorNotes
+  //   console.log(notes);
+  //   db.collection('patientVoice').findOneAndUpdate(
+  //  )({made: req.user._id,  date: new Date()
+  //   }, {
+  //      $addFields: {
+  //       doctorNotes: notes,
+  //     }
+  //   },
+  //   {
+  //     sort: {_id: -1},
+  //     upsert:true,
+  //     multi:false,
+  //   }, (err, result) => {
+  //     if (err) return res.send(err)
+  //     res.send(result)
+  //   })
+  // })
+
+
 
   // this finds all of the properties,once it is a match, it then deletes them
   app.delete('/userEntries', (req, res) => {
