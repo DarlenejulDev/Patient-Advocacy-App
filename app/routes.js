@@ -36,21 +36,23 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
       })
     }
   });
-  app.get('/pInfo', isLoggedIn, function(req, res) {
+var monster = {}
+  app.put('/datePick', (req, res) => {
+    let id = ObjectId(req.body.query)
+    const filter= {made: id}
 
-      const id= req.query.id
-      console.log("query: " + id);
-      const filter= {made: new ObjectId(id)}
-      if(req.query.logDate){
-        const dateFind=new Date(req.query.logDate)
-        const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
-        filter.date ={$gte:dateFind,$lt:dateFindNextDay}
-        console.log(JSON.stringify(filter));
-      }
+    console.log("ID: "+id+" Log: "+ req.body.logDate);
 
+    if(req.body.logDate){
+      const dateFind=new Date(req.body.logDate)
+      const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
+      filter.date ={$gte:dateFind,$lt:dateFindNextDay}
+      console.log(JSON.stringify(filter));
+      console.log("DATE: "+ dateFind);
       db.collection('patientVoice').find(filter).toArray((err, result) => {
+        console.log("RESULTS: "+ result);
         if (err) return console.log(err)
-          res.render('patientInfo.ejs', {
+          monster.results = {
             query:req.query.id,
             queryId: id,
             user :req.user,
@@ -70,8 +72,84 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
             stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
             hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
             rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
-          })
+          }
       })
+
+    }
+      //console.log("monster: "+monster);
+    res.send({query: req.body.query})
+  })
+
+  app.get('/pInfo', isLoggedIn, function(req, res) {
+      if(monster.results){
+        res.on('finish',()=>{monster = {}});
+        res.render('patientInfo.ejs', monster.results)
+
+      }else{
+
+
+      const id = req.query.id
+      console.log("query: " + id);
+      const filter= {made: id}
+      if(req.body.logDate){
+        const dateFind=new Date(req.body.logDate)
+        const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
+        filter.date ={$gte:dateFind,$lt:dateFindNextDay}
+        console.log(JSON.stringify(filter));
+        console.log("DATE: "+ dateFind);
+        db.collection('patientVoice').find(filter).toArray((err, result) => {
+          console.log("RESULTS: "+ result);
+          if (err) return console.log(err)
+            res.render('patientInfo.ejs', {
+              query:req.query.id,
+              queryId: id,
+              user :req.user,
+              patientInfo: result,
+              moment: moment,
+              veryHappyCount : result.filter((entry) => entry.mood === '5').length,
+              happyCount:result.filter((entry) => entry.mood === '4').length,
+              neutralCount:result.filter((entry) => entry.mood === '3').length,
+              sadCount:result.filter((entry) => entry.mood === '2').length,
+              verySadCount:result.filter((entry) => entry.mood === '1').length,
+              leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length,
+              rightLegPainCount: result.filter((entry) => entry.painLocation === 'Right Leg').length,
+              rightArmPainCount: result.filter((entry) =>   entry.painLocation === 'Right Arm').length,
+              leftArmPainCount: result.filter((entry) =>   entry.painLocation === 'Left Arm').length,
+              headPainCount: result.filter((entry) =>   entry.painLocation === 'Head').length,
+              shoulderPainCount: result.filter((entry) =>   entry.painLocation === 'Shoulder').length,
+              stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
+              hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
+              rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+            })
+        })
+      }else{
+        db.collection('patientVoice').find({made: new ObjectId(id)}).toArray((err, result) => {
+          if (err) return console.log(err)
+            res.render('patientInfo.ejs', {
+              query:req.query.id,
+              queryId: id,
+              user :req.user,
+              patientInfo: result,
+              moment: moment,
+              veryHappyCount : result.filter((entry) => entry.mood === '5').length,
+              happyCount:result.filter((entry) => entry.mood === '4').length,
+              neutralCount:result.filter((entry) => entry.mood === '3').length,
+              sadCount:result.filter((entry) => entry.mood === '2').length,
+              verySadCount:result.filter((entry) => entry.mood === '1').length,
+              leftLegPainCount: result.filter((entry) => entry.painLocation === 'Left Leg').length,
+              rightLegPainCount: result.filter((entry) => entry.painLocation === 'Right Leg').length,
+              rightArmPainCount: result.filter((entry) =>   entry.painLocation === 'Right Arm').length,
+              leftArmPainCount: result.filter((entry) =>   entry.painLocation === 'Left Arm').length,
+              headPainCount: result.filter((entry) =>   entry.painLocation === 'Head').length,
+              shoulderPainCount: result.filter((entry) =>   entry.painLocation === 'Shoulder').length,
+              stomachPainCount: result.filter((entry) =>   entry.painLocation === 'Stomach').length,
+              hipPainCount: result.filter((entry) =>   entry.painLocation === 'Hip').length,
+              rightFootPainCount: result.filter((entry) =>   entry.painLocation === 'Right Foot').length,    leftFootPainCount: result.filter((entry) =>   entry.painLocation === 'Left Foot').length,
+            })
+        })
+      }
+
+  }
   });
   app.get('/userEntries', isLoggedIn, function(req, res) {
       db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {
@@ -122,6 +200,7 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
     res.redirect('/pInfo?id='+req.body.queryId)
   })
 })
+// 
   app.post('/mood', (req, res) => {
 const now= new Date()
     const patientVoice= {
@@ -149,7 +228,7 @@ const now= new Date()
     }
 
 client.messages.create({
-    body: 'Thank you for signing up! My name is Darlene Julien and I created this patient Advocacy web app that allows the user to log their daily symptoms. Here is my contact information: darlenejuliendev@gmail.com',
+    body: 'Thank you for signing up! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms. Here is my contact information: darlenejuliendev@gmail.com',
     to: to,  // Text this number
     from: '+14242926283' // From a valid Twilio number
 })
@@ -173,7 +252,7 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
     })
   })
 
-  // This updates our browser to retieve the definition after the matched word is found in the document of the collection. The server will look for the user word, once it finds the user's word, it updates it with the desired value of userMeaning. In this case, it will not create another document since our upsert is set to true is there is a match.
+  // This updates our browser to retieve the user ID and the date and see if there is a macth. In this case, it will not create another document since our upsert is set to true.
   app.put('/userEntries', (req, res) => {
     db.collection('patientVoice')
     .findOneAndUpdate({made: req.user._id, date:req.body.date
@@ -190,26 +269,7 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
       res.send(result)
     })
   })
-  //
-  // app.put('/pInfo', (req, res) => {
-  //   const notes= req.body.doctorNotes
-  //   console.log(notes);
-  //   db.collection('patientVoice').findOneAndUpdate(
-  //  )({made: req.user._id,  date: new Date()
-  //   }, {
-  //      $addFields: {
-  //       doctorNotes: notes,
-  //     }
-  //   },
-  //   {
-  //     sort: {_id: -1},
-  //     upsert:true,
-  //     multi:false,
-  //   }, (err, result) => {
-  //     if (err) return res.send(err)
-  //     res.send(result)
-  //   })
-  // })
+
 
 
 

@@ -39,28 +39,46 @@ for (let i=0; i< update.length; i++){
               if (response.ok) return response.json()
             })
           });
-    }
+}
+    // for (let i=0; i< docNotes.length; i++){
+    //   docNotes[i].addEventListener('click',(event)=> {
+    //     alert('it works')
+    //             fetch('message', {
+    //               method: 'put',
+    //               headers: {'Content-Type': 'application/json','Accept': 'application/json'},
+    //               body: JSON.stringify({
+    //
+    //                 'doctorNotes':doctorNotes[i].innerText
+    //
+    //               })
+    //             })
+    //             .then(response => {
+    //               if (response.ok) return response.json()
+    //             })
+    //           });
+    //     }
+    //
+    //       })
+        // }
 
-    for (let i=0; i< docNotes.length; i++){
-      docNotes[i].addEventListener('click',(event)=> {
-        alert('it works')
-                fetch('message', {
-                  method: 'put',
-                  headers: {'Content-Type': 'application/json','Accept': 'application/json'},
-                  body: JSON.stringify({
+document.querySelector("#datePick").addEventListener("submit",(e)=>{
+  e.preventDefault()
+  let query = document.querySelector("#queryVal").value
+  let logDate = document.querySelector("#logDate").value
+  fetch('datePick', {
+    method: 'put',
+    headers: {'Content-Type': 'application/json','Accept': 'application/json'},
+    body: JSON.stringify({
 
-                    'doctorNotes':doctorNotes[i].innerText
+      'query': query,
+      'logDate': logDate
 
-                  })
-                })
-                .then(response => {
-                  if (response.ok) return response.json()
-                })
-              });
-        }
-
-
-
+    })
+  })
+  .then(response => {
+    window.location.reload()
+  })
+});
 
 
 
@@ -74,8 +92,7 @@ for (let i=0; i< update.length; i++){
 
 
 
-//   })
-// }
+
 //
 //
 // Array.from(del).forEach(function(element) {
