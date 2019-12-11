@@ -83,6 +83,9 @@ var monster = {}
   app.get('/pInfo', isLoggedIn, function(req, res) {
       if(monster.results){
         res.on('finish',()=>{monster = {}});
+        monster.results.query = req.query.id;
+        monster.results.queryId = req.query.id;
+        console.log("monster:", monster.results);
         res.render('patientInfo.ejs', monster.results)
 
       }else{
@@ -153,6 +156,7 @@ var monster = {}
       })
     }
   }
+
   });
   app.get('/userEntries', isLoggedIn, function(req, res) {
       db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {
