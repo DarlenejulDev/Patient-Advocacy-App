@@ -5,12 +5,12 @@ var accountSid = apikeys.TWILIO_ACCOUNT_SID
 var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
   // normal routes ===============================================================
 
-  // This will open to a page that will give the user the option to go to dictionary or sign in to their account
+  // This will open to a page that will give the user the option to go to sign in to their account or sign up.
   app.get('/', function(req, res) {
     res.render('login.ejs');
   });
   // PROFILE SECTION =========================
-  // This route brings the user to their profile once they have successfully logged in and shows them
+  // This route brings the doctor to their account once they have successfully logged in and shows them the list of their patients
   app.get('/mood', isLoggedIn, function(req, res) {
     if (req.user.doctor === true) {
       db.collection('users').find().toArray((err, result) => {
@@ -25,6 +25,7 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
           patients: newResult
         });
       })
+
     }else{
       db.collection('patientVoice').find({made: new ObjectId(req.user._id)}).toArray((err, result) => {
         if (err) return console.log(err)
@@ -36,13 +37,13 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
       })
     }
   });
+// Date picked form, will match and  update to fulfill search
 var monster = {}
   app.put('/datePick', (req, res) => {
+    // Users unique id
     let id = ObjectId(req.body.query)
     const filter= {made: id}
-
     console.log("ID: "+id+" Log: "+ req.body.logDate);
-
     if(req.body.logDate){
       const dateFind=new Date(req.body.logDate)
       const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
@@ -80,6 +81,7 @@ var monster = {}
     res.send({query: req.body.query})
   })
 
+// focuses on patient logs based on log number and mainly id of user/id of post
   app.get('/pInfo', isLoggedIn, function(req, res) {
       if(monster.results){
         res.on('finish',()=>{monster = {}});
@@ -158,6 +160,7 @@ var monster = {}
   }
 
   });
+
   app.get('/userEntries', isLoggedIn, function(req, res) {
       db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {
         if (err) return console.log(err)
@@ -249,34 +252,32 @@ const now= new Date()
       extraInfo: req.body.extraInfo,
       appt: req.body.appt,
     }
-
     // Text message feature
   if(req.body.appt === "Yes"){
     var client = require('twilio')(accountSid, authToken);
    let to = req.user.phoneNumber
-
     if(to.startsWith("+1")){
       console.log("perfect")
     }
     else{
       to = "+1"+ to
     }
-
-client.messages.create({
-    body: 'Thank you for signing up! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms. Here is my contact information: darlenejuliendev@gmail.com',
+ client.messages.create({
+    body: 'Hello there! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms.Feel free to message me at darlenejuliendev@gmail.com',
     to: to,  // Text this number
     from: '+14242926283' // From a valid Twilio number
 })
 .then((message) => console.log(message.sid));
-
 let messageEmployer = {
- body: 'Thank you for viewing my Demo Day project! I would love to stay in contact, here is my contact information: Email: darlenejuliendev@gmail.com. Looking forward to working on your team at your company!',
- to: to,  // Text this number
-from: '+14242926283' // "Thank you for viewing my demo day project. Here is my information:"
+  body: 'Again, thank you for viewing my Demo Day project earlier! I would love to stay in contact with you,so here is my contact information: Email: darlenejuliendev@gmail.com. Looking forward to working on your team at your company!',
+  to: to,  // Text this number
+ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my information:"
 }
-  setTimeout(client.messages.create, THREE_HOURS, messageEmployer);
+// THREE_HOURS
+  setTimeout(()=> client.messages.create(messageEmployer), 10800000);
+}
 
-}
+
 
     db.collection('patientVoice').save(patientVoice, (err, result) => {
       console.log("Inserted Id here:", patientVoice);
@@ -302,19 +303,6 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
     }, (err, result) => {
       if (err) return res.send(err)
       res.send(result)
-    })
-  })
-
-
-
-
-  // this finds all of the properties,once it is a match, it then deletes them
-  app.delete('/userEntries', (req, res) => {
-    (req.body)
-    var uId = ObjectId(req.session.passport.user)
-    db.collection('patientVoice').findOneAndDelete({_id:uId,date:req.body.date,extraInfo:req.body.extraInfo}, (err, result) => {
-      if (err) return res.send(500, err)
-        res.send('Message deleted!')
     })
   })
 

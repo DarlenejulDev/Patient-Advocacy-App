@@ -26,6 +26,11 @@
 textarea{
 	resize: none;
   font-size: 15px;
+  -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+
+   width: 90%;
 }
 h1{
   text-align: center;
@@ -65,3 +70,8 @@ body{
 .notesPatients{
   margin-right: 7em;
 }
+
+@media  (min-width:1431px) {
+    .doctorNotes{
+    margin-top: -3%;
+  }
