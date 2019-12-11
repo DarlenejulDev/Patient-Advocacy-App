@@ -5,7 +5,7 @@ var accountSid = apikeys.TWILIO_ACCOUNT_SID
 var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
   // normal routes ===============================================================
 
-  // This will open to a page that will give the user the option to go to dictionary or sign in to their account
+  // This will open to a page that will give the user the option to go to sign in to their account or sign up.
   app.get('/', function(req, res) {
     res.render('login.ejs');
   });
@@ -36,13 +36,13 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
       })
     }
   });
+
 var monster = {}
   app.put('/datePick', (req, res) => {
+    // Users unique id
     let id = ObjectId(req.body.query)
     const filter= {made: id}
-
     console.log("ID: "+id+" Log: "+ req.body.logDate);
-
     if(req.body.logDate){
       const dateFind=new Date(req.body.logDate)
       const dateFindNextDay= new Date(dateFind.getTime()+ 86400*1000)
@@ -302,19 +302,6 @@ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my i
     }, (err, result) => {
       if (err) return res.send(err)
       res.send(result)
-    })
-  })
-
-
-
-
-  // this finds all of the properties,once it is a match, it then deletes them
-  app.delete('/userEntries', (req, res) => {
-    (req.body)
-    var uId = ObjectId(req.session.passport.user)
-    db.collection('patientVoice').findOneAndDelete({_id:uId,date:req.body.date,extraInfo:req.body.extraInfo}, (err, result) => {
-      if (err) return res.send(500, err)
-        res.send('Message deleted!')
     })
   })
 
