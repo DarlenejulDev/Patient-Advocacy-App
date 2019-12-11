@@ -263,7 +263,7 @@ const now= new Date()
       to = "+1"+ to
     }
  client.messages.create({
-    body: 'Thank you for signing up! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms.Feel free to message me at darlenejuliendev@gmail.com',
+    body: 'Hello there! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms.Feel free to message me at darlenejuliendev@gmail.com',
     to: to,  // Text this number
     from: '+14242926283' // From a valid Twilio number
 })
