@@ -10,7 +10,7 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
     res.render('login.ejs');
   });
   // PROFILE SECTION =========================
-  // This route brings the user to their profile once they have successfully logged in and shows them
+  // This route brings the doctor to their account once they have successfully logged in and shows them the list of their patients
   app.get('/mood', isLoggedIn, function(req, res) {
     if (req.user.doctor === true) {
       db.collection('users').find().toArray((err, result) => {
@@ -25,6 +25,7 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
           patients: newResult
         });
       })
+
     }else{
       db.collection('patientVoice').find({made: new ObjectId(req.user._id)}).toArray((err, result) => {
         if (err) return console.log(err)
@@ -36,7 +37,7 @@ var authToken= apikeys.TWILIO_ACCOUNT_TOKEN
       })
     }
   });
-
+// Date picked form, will match and  update to fulfill search
 var monster = {}
   app.put('/datePick', (req, res) => {
     // Users unique id
@@ -80,6 +81,7 @@ var monster = {}
     res.send({query: req.body.query})
   })
 
+// focuses on patient logs based on log number and mainly id of user/id of post
   app.get('/pInfo', isLoggedIn, function(req, res) {
       if(monster.results){
         res.on('finish',()=>{monster = {}});
@@ -158,6 +160,7 @@ var monster = {}
   }
 
   });
+
   app.get('/userEntries', isLoggedIn, function(req, res) {
       db.collection('patientVoice').find({made:req.user._id}).toArray((err, result) => {
         if (err) return console.log(err)
