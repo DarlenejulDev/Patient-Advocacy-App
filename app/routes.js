@@ -252,34 +252,32 @@ const now= new Date()
       extraInfo: req.body.extraInfo,
       appt: req.body.appt,
     }
-
     // Text message feature
   if(req.body.appt === "Yes"){
     var client = require('twilio')(accountSid, authToken);
    let to = req.user.phoneNumber
-
     if(to.startsWith("+1")){
       console.log("perfect")
     }
     else{
       to = "+1"+ to
     }
-
-client.messages.create({
-    body: 'Thank you for signing up! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms. Here is my contact information: darlenejuliendev@gmail.com',
+ client.messages.create({
+    body: 'Thank you for signing up! My name is Darlene Julien and I created this Patient Advocacy web app that allows the user to log their daily symptoms.Feel free to message me at darlenejuliendev@gmail.com',
     to: to,  // Text this number
     from: '+14242926283' // From a valid Twilio number
 })
 .then((message) => console.log(message.sid));
-
 let messageEmployer = {
- body: 'Thank you for viewing my Demo Day project! I would love to stay in contact, here is my contact information: Email: darlenejuliendev@gmail.com. Looking forward to working on your team at your company!',
- to: to,  // Text this number
-from: '+14242926283' // "Thank you for viewing my demo day project. Here is my information:"
+  body: 'Again, thank you for viewing my Demo Day project earlier! I would love to stay in contact with you,so here is my contact information: Email: darlenejuliendev@gmail.com. Looking forward to working on your team at your company!',
+  to: to,  // Text this number
+ from: '+14242926283' // "Thank you for viewing my demo day project. Here is my information:"
 }
-  setTimeout(client.messages.create, THREE_HOURS, messageEmployer);
+// THREE_HOURS
+  setTimeout(()=> client.messages.create(messageEmployer), 10800000);
+}
 
-}
+
 
     db.collection('patientVoice').save(patientVoice, (err, result) => {
       console.log("Inserted Id here:", patientVoice);
