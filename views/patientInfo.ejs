@@ -62,6 +62,7 @@
       ['Right Leg', <%= rightLegPainCount %> ],
       ['Right Arm', <%= rightArmPainCount %> ],
       ['Left Arm', <%= leftArmPainCount %> ],
+      ['Back', <%= backPainCount %> ],
       ['Head', <%= headPainCount %> ],
       ['Shoulder', <%= shoulderPainCount %> ],
       ['Stomach', <%= stomachPainCount %> ],
@@ -101,7 +102,14 @@
             </p>
             <button class="find" type="submit" name="submit" value="submit">Find</button>
          </form>
-         <ul>
+
+
+      <% if(patientInfo.length === 0) { %>
+        <div class= "backGround">No Entries for this Date!</div>
+
+
+      <% } else { %>
+      <ul>
       <%
       let numbersToMood = ['Very Sad','Sad','Neutral','Happy','Very Happy']
       for(var i=0; i<patientInfo.length; i++) {
@@ -127,13 +135,12 @@
           <input type="hidden" value="<%= queryId %>" name='queryId'>
          <textarea class="question" class="doctorNotes" name="doctorNotes" rows="8" cols="80"><%= patientInfo[i].doctorNotes %></textarea>
          <input type="submit" name="submit" value="submit">
-
        </form>
-
-         <span class="docNotes"><i class="far fa-edit"></i></span>
         </li>
       <% } %>
       </ul>
+      <% } %>
+
    </div>
    <div id="moodChart_div"></div>
    <div id="patientPainChart_div"></div>
